@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'DhanBook - Personal Wealth Manager',
+  title: 'MoneyLens - Personal Wealth Manager',
   description: 'Your Secure Personal Finance Companion',
   manifest: '/manifest.json',
 };

@@ -208,11 +208,11 @@ export async function exportWorkbookXlsx(
     month: "short",
     year: "numeric",
   });
-  const subtitle = `DhanBook  ·  Period: ${dateRangeLabel}  ·  Generated: ${generatedOn}`;
+  const subtitle = `MoneyLens  ·  Period: ${dateRangeLabel}  ·  Generated: ${generatedOn}`;
 
   const ExcelJS = (await import("exceljs")).default;
   const wb = new ExcelJS.Workbook();
-  wb.creator = "DhanBook";
+  wb.creator = "MoneyLens";
   wb.created = new Date();
 
   // ── Transactions sheet ──────────────────────────────────────────────────────
@@ -337,5 +337,5 @@ export async function exportWorkbookXlsx(
     wb.addWorksheet("Empty");
   }
 
-  await downloadWorkbook(wb, filename ?? `dhanbook-export-${dateTag()}.xlsx`);
+  await downloadWorkbook(wb, filename ?? `moneylens-export-${dateTag()}.xlsx`);
 }

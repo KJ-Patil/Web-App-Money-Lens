@@ -108,7 +108,7 @@ export default function RegisterPage() {
             Create Account
           </h2>
           <p className="text-sm font-medium text-foreground-muted">
-            Start managing your wealth with DhanBook.
+            Start managing your wealth with MoneyLens.
           </p>
         </div>
 

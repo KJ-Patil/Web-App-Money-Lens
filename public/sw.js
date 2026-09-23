@@ -1,7 +1,7 @@
 // Bump this whenever the caching strategy changes: the activate handler deletes
 // every cache whose name doesn't match, so a new name is what purges stale
 // content from browsers that already installed an older worker.
-const CACHE_NAME = "dhanbook-cache-v2";
+const CACHE_NAME = "moneylens-cache-v2";
 
 // The offline shell. Deliberately tiny — everything else is cached on demand.
 const STATIC_ASSETS = ["/", "/manifest.json", "/favicon.ico"];

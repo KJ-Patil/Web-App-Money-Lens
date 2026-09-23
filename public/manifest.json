@@ -1,6 +1,6 @@
 {
-  "name": "DhanBook",
-  "short_name": "DhanBook",
+  "name": "MoneyLens",
+  "short_name": "MoneyLens",
   "description": "Your Secure Personal Finance Companion",
   "start_url": "/",
   "display": "standalone",

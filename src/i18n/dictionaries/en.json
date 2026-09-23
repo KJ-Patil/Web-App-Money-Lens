@@ -32,7 +32,7 @@
     "target": "Target",
     "both": "Both",
     "spent": "Spent",
-    "appName": "DhanBook"
+    "appName": "MoneyLens"
   },
   "nav": {
     "workspace": "Workspace",
@@ -59,7 +59,7 @@
     "helpSupport": "Help & Support"
   },
   "splash": {
-    "title": "DhanBook",
+    "title": "MoneyLens",
     "subtitle": "Personal Wealth Manager"
   },
   "login": {
@@ -72,7 +72,7 @@
     "orConnectWith": "Or Connect With",
     "continueWithGoogle": "Continue with Google",
     "continueWithPhone": "Continue with Phone",
-    "newToDhanBook": "New to DhanBook?",
+    "newToMoneyLens": "New to MoneyLens?",
     "createAccount": "Create an account",
     "mobileNumber": "Mobile Number",
     "countryCodeHint": "Include your country code (e.g. +91 for India).",
@@ -120,7 +120,7 @@
   },
   "register": {
     "createAccount": "Create Account",
-    "startManaging": "Start managing your wealth with DhanBook.",
+    "startManaging": "Start managing your wealth with MoneyLens.",
     "profileAvatar": "Profile Avatar Picture",
     "changePhoto": "Change Photo",
     "fullName": "Full Name",
@@ -265,7 +265,7 @@
     "noMatchingLanguages": "No matching languages found.",
     "aboutUs": "About Us & Legal",
     "aboutDescription": "Terms, Privacy, and App Information.",
-    "aboutApp": "About DhanBook",
+    "aboutApp": "About MoneyLens",
     "termsConditions": "Terms & Conditions",
     "privacyPolicy": "Privacy Policy",
     "helpDescription": "FAQs and direct support channels.",
@@ -658,8 +658,8 @@
     "callDesc": "Speak to our customer support representative directly.",
     "callBtn": "Call Now",
     "faqsTitle": "Frequently Asked Questions",
-    "faq1Question": "What is DhanBook?",
-    "faq1Answer": "DhanBook is a secure, offline-first personal wealth manager designed to track transactions, simulate budgets, calculate financial health scores, manage family wallets, and more.",
+    "faq1Question": "What is MoneyLens?",
+    "faq1Answer": "MoneyLens is a secure, offline-first personal wealth manager designed to track transactions, simulate budgets, calculate financial health scores, manage family wallets, and more.",
     "faq2Question": "Where is my financial data stored?",
     "faq2Answer": "Your data is stored locally on your device for fast offline access. If you are signed in, it is automatically synchronized to a secure database in the cloud (Firebase Firestore).",
     "faq3Question": "How does Voice Logging work?",

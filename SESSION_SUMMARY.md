@@ -1,4 +1,4 @@
-# Session Summary — DhanBook
+# Session Summary — MoneyLens
 
 _A recap of what was diagnosed, fixed, and built in this working session._
 

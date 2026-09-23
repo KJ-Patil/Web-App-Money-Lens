@@ -184,7 +184,7 @@ export default function SmsGatewayPage() {
         </div>
 
         <p className="text-[11px] font-medium text-foreground-secondary">
-          Credit is bought from Fast2SMS with your own account — DhanBook never handles the
+          Credit is bought from Fast2SMS with your own account — MoneyLens never handles the
           payment. The more you recharge at once, the lower the per-SMS rate. Minimum recharge is
           ₹100.
         </p>

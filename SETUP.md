@@ -1,4 +1,4 @@
-# DhanBook — Setup & Build Guide
+# MoneyLens — Setup & Build Guide
 
 Everything needed to install, configure, run, and build the app from scratch.
 Pair this with [ARCHITECTURE.md](ARCHITECTURE.md) (how it's wired) and

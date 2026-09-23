@@ -100,7 +100,7 @@ export function exportTransactionsCsv(
   ]);
 
   const csv = buildCsvContent(headers, rows);
-  triggerDownload(csv, filename ?? `dhanbook-transactions-${dateTag()}.csv`);
+  triggerDownload(csv, filename ?? `moneylens-transactions-${dateTag()}.csv`);
 }
 
 /**
@@ -126,7 +126,7 @@ export function exportBudgetsCsv(
   });
 
   const csv = buildCsvContent(headers, rows);
-  triggerDownload(csv, filename ?? `dhanbook-budgets-${dateTag()}.csv`);
+  triggerDownload(csv, filename ?? `moneylens-budgets-${dateTag()}.csv`);
 }
 
 /**
@@ -152,5 +152,5 @@ export function exportSavingsCsv(
   });
 
   const csv = buildCsvContent(headers, rows);
-  triggerDownload(csv, filename ?? `dhanbook-savings-${dateTag()}.csv`);
+  triggerDownload(csv, filename ?? `moneylens-savings-${dateTag()}.csv`);
 }

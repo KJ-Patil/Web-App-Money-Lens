@@ -461,7 +461,7 @@ export default function LoginPage() {
 
         {/* Footer Link */}
         <p className="text-center text-sm text-foreground-muted">
-          {t('login.newToDhanBook')}{" "}
+          {t('login.newToMoneyLens')}{" "}
           <Link href="/register" className="text-link hover:text-link-hover font-semibold">
             {t('login.createAccount')}
           </Link>
