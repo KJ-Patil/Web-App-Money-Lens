@@ -138,7 +138,7 @@ function buildHtml(opts: PdfReportOptions): string {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>BachatKhata · Financial Report</title>
+  <title>DhanBook · Financial Report</title>
   <style>
     @page { size: A4 portrait; margin: 18mm 16mm; }
 
@@ -313,7 +313,7 @@ function buildHtml(opts: PdfReportOptions): string {
                  m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1
                  m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
       </svg>
-      <span class="header-name">Bachat Khata</span>
+      <span class="header-name">DhanBook</span>
     </div>
     <div class="header-tagline">Financial Statement Report</div>
     <div class="header-meta">
@@ -415,7 +415,7 @@ function buildHtml(opts: PdfReportOptions): string {
 
   <!-- FOOTER -->
   <div class="footer">
-    BachatKhata &nbsp;·&nbsp; Zero-license client-side financial tracker
+    DhanBook &nbsp;·&nbsp; Zero-license client-side financial tracker
     &nbsp;·&nbsp; All data processed locally on your device. Never uploaded to any server.
   </div>
 
@@ -442,7 +442,7 @@ export function generatePdfReport(options: PdfReportOptions): void {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `bachatkhata-report-${new Date().toISOString().slice(0, 10)}.html`;
+    link.download = `dhanbook-report-${new Date().toISOString().slice(0, 10)}.html`;
     link.style.display = "none";
     document.body.appendChild(link);
     link.click();

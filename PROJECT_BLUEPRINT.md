@@ -1,4 +1,4 @@
-# Bachat Khata — Complete Project Blueprint
+# DhanBook — Complete Project Blueprint
 
 > A full, build-from-scratch specification of **every feature, page, function, type,
 > data model, and convention** in this codebase. Use this document to recreate the
@@ -9,7 +9,7 @@
 
 ## 1. What the App Is
 
-**Bachat Khata – Personal Wealth Manager** is an offline-first personal-finance PWA.
+**DhanBook – Personal Wealth Manager** is an offline-first personal-finance PWA.
 
 - **Local-first:** all data lives in `localStorage` (instant, offline). No mock/seed
   data is ever fabricated — every KPI, chart, and balance is *derived* from the
@@ -151,7 +151,7 @@ Initializes Firebase from `NEXT_PUBLIC_FIREBASE_*` env vars:
 
 ### Root layout `src/app/layout.tsx`
 - Fonts: `Geist` + `Geist_Mono` (CSS vars `--font-geist-sans` / `--font-geist-mono`).
-- `metadata`: title "Bachat Khata - Personal Wealth Manager", description, `manifest: /manifest.json`.
+- `metadata`: title "DhanBook - Personal Wealth Manager", description, `manifest: /manifest.json`.
 - Renders `<NextTopLoader>`, `<Providers>{children}</Providers>`, `<Toaster richColors position="top-right" closeButton duration={4000} />`.
 
 ### Providers `src/components/providers/providers.tsx`
@@ -289,7 +289,7 @@ The 7 `KEYS` above. **Not** synced: auth/session, preferences, categories.
 - `getCurrencySymbol(code)`, `getCurrencyInfo(code)`, `getAllCurrencies()`, `convertAmount(amount, fromRate, toRate)`.
 
 ### 7.11 `utils/csvExporter.ts`
-- `exportTransactionsCsv(txs, currencyCode="INR", filename?)`, `exportBudgetsCsv`, `exportSavingsCsv`. RFC-4180 escaping, UTF-8 BOM for Excel, client-side `Blob` download. Default filenames `bachatkhata-<type>-<YYYY-MM-DD>.csv`.
+- `exportTransactionsCsv(txs, currencyCode="INR", filename?)`, `exportBudgetsCsv`, `exportSavingsCsv`. RFC-4180 escaping, UTF-8 BOM for Excel, client-side `Blob` download. Default filenames `dhanbook-<type>-<YYYY-MM-DD>.csv`.
 - Internal: `escapeCsvCell`, `buildCsvContent`, `triggerDownload`, `dateTag`.
 - Types: `ExportableTransaction`, `ExportableBudget`, `ExportableSavingsGoal`.
 

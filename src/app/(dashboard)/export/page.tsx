@@ -264,14 +264,14 @@ export default function ExportPage() {
         dateRangeLabel,
         filename:
           transactionFilter === "all"
-            ? `bachatkhata-export-${new Date().toISOString().slice(0, 10)}.xlsx`
-            : `bachatkhata-${transactionFilter}-${new Date().toISOString().slice(0, 10)}.xlsx`,
+            ? `dhanbook-export-${new Date().toISOString().slice(0, 10)}.xlsx`
+            : `dhanbook-${transactionFilter}-${new Date().toISOString().slice(0, 10)}.xlsx`,
       });
     } else if (format === "csv") {
       // Stagger multiple CSV downloads so the browser doesn't block them
       let delay = 0;
       if (selectedTypes.has("transactions") && transactions.length > 0) {
-        const tFileName = transactionFilter === "all" ? `bachatkhata-transactions-${new Date().toISOString().slice(0, 10)}.csv` : `bachatkhata-${transactionFilter}-${new Date().toISOString().slice(0, 10)}.csv`;
+        const tFileName = transactionFilter === "all" ? `dhanbook-transactions-${new Date().toISOString().slice(0, 10)}.csv` : `dhanbook-${transactionFilter}-${new Date().toISOString().slice(0, 10)}.csv`;
         setTimeout(() => exportTransactionsCsv(transactions, currencyCode, tFileName), delay);
         delay += 300;
       }

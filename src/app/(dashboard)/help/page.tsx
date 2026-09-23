@@ -91,7 +91,7 @@ export default function HelpSupportPage() {
           <div className="mt-6 pt-2">
             <a
               href={`https://wa.me/${SUPPORT_PHONE_DIGITS}?text=${encodeURIComponent(
-                "Hi Bachat Khata Support, I need assistance."
+                "Hi DhanBook Support, I need assistance."
               )}`}
               target="_blank"
               rel="noopener noreferrer"

@@ -1,6 +1,6 @@
-# Bachat Khata (Android) — Complete Features & Functions Reference
+# DhanBook (Android) — Complete Features & Functions Reference
 
-> A build-from-scratch reference for recreating **Bachat Khata – Personal Wealth Manager**
+> A build-from-scratch reference for recreating **DhanBook – Personal Wealth Manager**
 > as a **native Android app in Android Studio**. Every feature, function, and module from
 > the existing Next.js/React web app is mapped here to its Android (Kotlin + Jetpack)
 > equivalent so the same product can be built with the same behavior.
@@ -791,7 +791,7 @@ fun exportBudgetsCsv(...)
 fun exportSavingsCsv(...)
 ```
 RFC-4180 escaping + UTF-8 BOM (Excel). Write via **MediaStore (`Downloads`)** or SAF
-`ACTION_CREATE_DOCUMENT`. Default names `bachatkhata-<type>-<yyyy-MM-dd>.csv`.
+`ACTION_CREATE_DOCUMENT`. Default names `dhanbook-<type>-<yyyy-MM-dd>.csv`.
 
 ### 5.13 `PdfGenerator.kt`
 ```kotlin
@@ -1025,9 +1025,9 @@ data class ExcelExportOptions(
 )
 ```
 One sheet per **non-empty** dataset (Transactions / Budgets / Savings), each with a title row,
-a `Bachat Khata · Period: … · Generated: …` subtitle, styled headers, gridlines off, and a
+a `DhanBook · Period: … · Generated: …` subtitle, styled headers, gridlines off, and a
 currency number format (`"₹"#,##0`). Use **Apache POI** (`XSSFWorkbook`) and write through
-MediaStore/SAF. Default name `bachatkhata-export-<yyyy-MM-dd>.xlsx`.
+MediaStore/SAF. Default name `dhanbook-export-<yyyy-MM-dd>.xlsx`.
 
 ### 5.23 `Languages.kt` + localization
 ```kotlin
@@ -1408,7 +1408,7 @@ navigation bar icons) so system chrome, scrollbars, and text handles follow.
   the tokens define; keep the fixed schemes so both platforms look like the same product.
 
 **App identity** (from the web `manifest.json` — carry it over so both platforms match):
-name **Bachat Khata**, short name **BachatKhata**, description *"Your Secure Personal Finance
+name **DhanBook**, short name **DhanBook**, description *"Your Secure Personal Finance
 Companion"*, theme color **`#1d4ed8`** (= `primary`), background `#ffffff`, **portrait**
 orientation. The web's `sw.js` has no Android counterpart — the APK plus Room fill that role —
 but **one rule inside it does carry over**: the worker passes every cross-origin request

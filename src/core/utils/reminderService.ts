@@ -13,18 +13,18 @@ interface TemplateMap {
 const TEMPLATES: Record<ReminderRelation, Record<ReminderLang, TemplateMap>> = {
   credit: {
     en: {
-      friendly: "Hi {name}, just a friendly reminder that you have a pending balance of {amount} on Bachat Khata. You can settle it whenever you're ready. Thanks!",
-      formal: "Dear {name}, this is a payment reconciliation notice. Please review your outstanding balance of {amount} on your Bachat Khata account and clear the payment at your earliest convenience. Regards.",
+      friendly: "Hi {name}, just a friendly reminder that you have a pending balance of {amount} on DhanBook. You can settle it whenever you're ready. Thanks!",
+      formal: "Dear {name}, this is a payment reconciliation notice. Please review your outstanding balance of {amount} on your DhanBook account and clear the payment at your earliest convenience. Regards.",
       urgent: "URGENT: Dear {name}, your pending balance of {amount} is overdue. Please settle this amount immediately via UPI or Bank transfer. Thank you.",
     },
     hi: {
-      friendly: "नमस्ते {name}, बस एक छोटा सा रिमाइंडर कि आपका बचत खाता (Bachat Khata) पर {amount} का बैलेंस पेंडिंग है। जब आप तैयार हों, तब इसका निपटान कर सकते हैं। धन्यवाद!",
-      formal: "प्रिय {name}, यह भुगतान मिलान (reconciliation) सूचना है। कृपया बचत खाता पर अपने {amount} के लंबित बैलेंस की समीक्षा करें और जल्द से जल्द इसका भुगतान करें। सादर।",
+      friendly: "नमस्ते {name}, बस एक छोटा सा रिमाइंडर कि आपका धनबुक (DhanBook) पर {amount} का बैलेंस पेंडिंग है। जब आप तैयार हों, तब इसका निपटान कर सकते हैं। धन्यवाद!",
+      formal: "प्रिय {name}, यह भुगतान मिलान (reconciliation) सूचना है। कृपया धनबुक पर अपने {amount} के लंबित बैलेंस की समीक्षा करें और जल्द से जल्द इसका भुगतान करें। सादर।",
       urgent: "महत्वपूर्ण: प्रिय {name}, आपका {amount} का बैलेंस अतिदेय (overdue) हो गया है। कृपया इस राशि का तुरंत भुगतान करें। धन्यवाद।",
     },
     mr: {
-      friendly: "नमस्कार {name}, एक छोटीशी आठवण की तुमचे बचत खाते (Bachat Khata) वर {amount} चे देणे प्रलंबित आहे. सोयीनुसार पेमेंट करू शकता. धन्यवाद!",
-      formal: "प्रिय {name}, ही पेमेंट रिकॉन्सिलिएशन नोटीस आहे. कृपया बचत खाते वरील आपल्या {amount} प्रलंबित रकमेची पडताळणी करा आणि लवकरात लवकर त्याचे पेमेंट करा. सादर.",
+      friendly: "नमस्कार {name}, एक छोटीशी आठवण की तुमचे धनबुक (DhanBook) वर {amount} चे देणे प्रलंबित आहे. सोयीनुसार पेमेंट करू शकता. धन्यवाद!",
+      formal: "प्रिय {name}, ही पेमेंट रिकॉन्सिलिएशन नोटीस आहे. कृपया धनबुक वरील आपल्या {amount} प्रलंबित रकमेची पडताळणी करा आणि लवकरात लवकर त्याचे पेमेंट करा. सादर.",
       urgent: "तातडीचे: प्रिय {name}, तुमचे {amount} चे देणे प्रलंबित (overdue) झाले आहे. कृपया या रकमेचे त्वरित पेमेंट करा. धन्यवाद.",
     },
   },

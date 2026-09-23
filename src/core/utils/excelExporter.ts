@@ -208,11 +208,11 @@ export async function exportWorkbookXlsx(
     month: "short",
     year: "numeric",
   });
-  const subtitle = `Bachat Khata  ·  Period: ${dateRangeLabel}  ·  Generated: ${generatedOn}`;
+  const subtitle = `DhanBook  ·  Period: ${dateRangeLabel}  ·  Generated: ${generatedOn}`;
 
   const ExcelJS = (await import("exceljs")).default;
   const wb = new ExcelJS.Workbook();
-  wb.creator = "Bachat Khata";
+  wb.creator = "DhanBook";
   wb.created = new Date();
 
   // ── Transactions sheet ──────────────────────────────────────────────────────
@@ -337,5 +337,5 @@ export async function exportWorkbookXlsx(
     wb.addWorksheet("Empty");
   }
 
-  await downloadWorkbook(wb, filename ?? `bachatkhata-export-${dateTag()}.xlsx`);
+  await downloadWorkbook(wb, filename ?? `dhanbook-export-${dateTag()}.xlsx`);
 }

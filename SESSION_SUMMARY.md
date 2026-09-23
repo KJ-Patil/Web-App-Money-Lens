@@ -1,4 +1,4 @@
-# Session Summary — Bachat Khata
+# Session Summary — DhanBook
 
 _A recap of what was diagnosed, fixed, and built in this working session._
 

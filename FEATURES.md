@@ -1,8 +1,8 @@
-# Bachat Khata — Complete Features & Functions Reference
+# DhanBook — Complete Features & Functions Reference
 
 > An exhaustive catalog of **every feature the app offers** and **every function in the codebase** — down to the small helpers. Generated from a full read of `src/`. For a build-from-scratch spec see [PROJECT_BLUEPRINT.md](PROJECT_BLUEPRINT.md).
 
-**Bachat Khata – Personal Wealth Manager** is an offline-first personal-finance PWA: local-first (`localStorage`) with per-user Firebase Firestore cloud sync, encrypted at rest, Indian-first (INR lakh/crore, bank-SMS parsing, Hindi/Hinglish voice logging, CIBIL, khata ledger, WhatsApp reminders). No mock/seed data is ever fabricated — every KPI and chart is *derived* from the real transactions a user enters.
+**DhanBook – Personal Wealth Manager** is an offline-first personal-finance PWA: local-first (`localStorage`) with per-user Firebase Firestore cloud sync, encrypted at rest, Indian-first (INR lakh/crore, bank-SMS parsing, Hindi/Hinglish voice logging, CIBIL, khata ledger, WhatsApp reminders). No mock/seed data is ever fabricated — every KPI and chart is *derived* from the real transactions a user enters.
 
 ---
 

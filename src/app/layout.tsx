@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Bachat Khata - Personal Wealth Manager',
+  title: 'DhanBook - Personal Wealth Manager',
   description: 'Your Secure Personal Finance Companion',
   manifest: '/manifest.json',
 };

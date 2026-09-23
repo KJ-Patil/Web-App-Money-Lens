@@ -44,7 +44,7 @@ export interface SessionProfile extends UserProfile {
 
 const SESSION_KEY = "user_session";
 /** Same-tab change signal; the `storage` event only fires in *other* tabs. */
-const SESSION_EVENT = "bachat:session-profile";
+const SESSION_EVENT = "dhanbook:session-profile";
 
 /** Stable empty snapshot — must be a constant so React sees an unchanged ref. */
 const EMPTY_SESSION: SessionProfile = { email: null, name: "", avatarUrl: null };

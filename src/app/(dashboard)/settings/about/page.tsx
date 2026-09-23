@@ -36,7 +36,7 @@ export default function AboutUsPage() {
           </div>
           <div className="space-y-1">
             <h1 className="text-2xl font-black tracking-tight md:text-3xl">
-              {t("settings.aboutKhatabook")}
+              {t("settings.aboutApp")}
             </h1>
             <p className="text-sm font-semibold text-white/80 max-w-xl">
               A premium, offline-first personal wealth manager designed to track transactions, simulate budgets, calculate financial health scores, and maintain shared wallets.
@@ -90,10 +90,10 @@ export default function AboutUsPage() {
           <div className="space-y-6 animate-fade-in">
             <div className="space-y-2">
               <h2 className="text-xl font-black text-foreground">
-                About Bachat Khata (Khatabook)
+                About DhanBook
               </h2>
               <p className="text-sm font-semibold text-foreground-secondary leading-relaxed">
-                Bachat Khata is a state-of-the-art wealth tracking shell built specifically for users looking to manage budgets, ledgers, and savings rates securely. The app balances advanced offline independence with absolute cloud transparency, ensuring you are always in complete control of your financial records.
+                DhanBook is a state-of-the-art wealth tracking shell built specifically for users looking to manage budgets, ledgers, and savings rates securely. The app balances advanced offline independence with absolute cloud transparency, ensuring you are always in complete control of your financial records.
               </p>
             </div>
 
@@ -154,7 +154,7 @@ export default function AboutUsPage() {
 
             <div className="space-y-4 text-sm font-semibold text-foreground-secondary leading-relaxed">
               <p>
-                By using Bachat Khata (Khatabook), you agree to these Terms and Conditions. Please review them carefully before starting your ledger work.
+                By using DhanBook, you agree to these Terms and Conditions. Please review them carefully before starting your ledger work.
               </p>
               
               <div className="space-y-1">
@@ -194,7 +194,7 @@ export default function AboutUsPage() {
 
             <div className="space-y-4 text-sm font-semibold text-foreground-secondary leading-relaxed">
               <p>
-                We value your privacy above everything else. That is why Bachat Khata (Khatabook) is designed to operate on a zero-tracking framework.
+                We value your privacy above everything else. That is why DhanBook is designed to operate on a zero-tracking framework.
               </p>
 
               <div className="space-y-1">

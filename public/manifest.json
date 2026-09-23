@@ -1,6 +1,6 @@
 {
-  "name": "Bachat Khata",
-  "short_name": "BachatKhata",
+  "name": "DhanBook",
+  "short_name": "DhanBook",
   "description": "Your Secure Personal Finance Companion",
   "start_url": "/",
   "display": "standalone",
