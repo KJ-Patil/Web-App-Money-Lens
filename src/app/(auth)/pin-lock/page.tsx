@@ -289,7 +289,7 @@ export default function PinLockPage() {
   const showHint = mode !== "verify" && !(mode === "forgot" && !forgotVerified);
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 py-8 bg-background-subtle">
+    <main className="flex min-h-screen flex-1 flex-col items-center justify-center px-4 py-8 bg-background-subtle">
       <div className="w-full max-w-sm bg-card border border-border rounded-3xl shadow-sm p-8 flex flex-col items-center text-center space-y-6">
 
         {/* Icon */}

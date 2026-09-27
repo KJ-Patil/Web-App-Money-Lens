@@ -132,6 +132,17 @@ export default function DashboardLayout({
       }
       // Keep live FX rates fresh so currency display converts, not just relabels.
       refreshExchangeRates();
+
+      const handleOpenAddTx = () => setIsModalOpen(true);
+      const handleOpenVoice = () => setIsVoiceOpen(true);
+
+      window.addEventListener("app:open-add-transaction", handleOpenAddTx);
+      window.addEventListener("app:open-voice", handleOpenVoice);
+
+      return () => {
+        window.removeEventListener("app:open-add-transaction", handleOpenAddTx);
+        window.removeEventListener("app:open-voice", handleOpenVoice);
+      };
     }
   }, []);
 
@@ -219,31 +230,33 @@ export default function DashboardLayout({
   if (!isAuthed) return null;
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-background-subtle">
+    <div className="min-h-screen flex flex-col md:flex-row bg-background clay-mesh-bg">
       {/* ────────────────── DESKTOP SIDEBAR ────────────────── */}
-      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-card border-r border-border z-20">
+      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-card/95 backdrop-blur-sm border-r border-border shadow-[6px_0_24px_-6px_rgba(148,163,184,0.2)] dark:shadow-[6px_0_24px_-6px_rgba(0,0,0,0.6)] z-20">
         {/* Brand Header */}
-        <div className="flex items-center px-6 pt-8 pb-4 border-b border-border">
-          <svg
-            className="w-8 h-8 text-primary"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span className="ml-3 font-extrabold text-xl text-foreground tracking-tight">
+        <div className="flex items-center px-6 pt-8 pb-4 border-b border-border/80">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center shadow-[0_6px_12px_-2px_rgba(29,78,216,0.4),inset_1.5px_1.5px_2.5px_rgba(255,255,255,0.5),inset_-1.5px_-1.5px_2.5px_rgba(0,0,0,0.25)]">
+            <svg
+              className="w-5 h-5 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </div>
+          <span className="ml-3 font-black text-xl text-foreground tracking-tight">
             {t('common.appName')}
           </span>
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
+        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -251,13 +264,13 @@ export default function DashboardLayout({
               <Link
                 key={item.nameKey}
                 href={item.href}
-                className={`flex items-center px-4 py-3 text-sm font-semibold rounded-xl transition-all ${
+                className={`flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all duration-200 ${
                   isActive
-                    ? "bg-primary-lighter text-primary"
-                    : "text-foreground-secondary hover:bg-secondary hover:text-foreground"
+                    ? "bg-primary text-white shadow-[0_8px_16px_-3px_rgba(29,78,216,0.45),inset_2px_2px_3px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(15,23,42,0.3)] font-bold scale-[1.02]"
+                    : "text-foreground-secondary hover:bg-secondary/70 hover:text-foreground hover:translate-x-1"
                 }`}
               >
-                <Icon className="mr-3 h-5 w-5 shrink-0" />
+                <Icon className={`mr-3 h-5 w-5 shrink-0 ${isActive ? "text-white" : ""}`} />
                 {t(item.nameKey)}
               </Link>
             );
@@ -265,11 +278,11 @@ export default function DashboardLayout({
         </nav>
 
         {/* Desktop Footer Actions */}
-        <div className="p-4 border-t border-border space-y-2">
+        <div className="p-4 border-t border-border/80 space-y-2.5">
           {/* Currency Trigger Option */}
           <button
             onClick={() => setIsCurrencySheetOpen(true)}
-            className="w-full flex items-center px-4 py-2.5 text-sm font-semibold text-foreground-secondary hover:bg-secondary rounded-xl transition-colors cursor-pointer"
+            className="w-full flex items-center px-4 py-2.5 text-sm font-semibold text-foreground-secondary bg-secondary/60 hover:bg-secondary rounded-xl transition-all shadow-[inset_1.5px_1.5px_3px_rgba(255,255,255,0.9),inset_-1.5px_-1.5px_3px_rgba(148,163,184,0.2)] dark:shadow-[inset_1.5px_1.5px_3px_rgba(255,255,255,0.06),inset_-1.5px_-1.5px_3px_rgba(0,0,0,0.5)] cursor-pointer"
           >
             <Globe className="mr-3 h-5 w-5 shrink-0 text-icon-default" />
             {t('common.currency')}: <span className="ml-1 text-primary font-bold">{activeCurrency}</span>
@@ -286,7 +299,7 @@ export default function DashboardLayout({
             </button>
             <button
               onClick={() => setIsVoiceOpen(true)}
-              className="btn-secondary px-3 flex items-center justify-center shrink-0 border-primary text-primary hover:bg-primary-lighter"
+              className="btn-secondary px-3 flex items-center justify-center shrink-0 border-primary/30 text-primary hover:bg-primary-lighter/80"
               aria-label="Voice Logging"
             >
               <Mic className="w-5 h-5" />
@@ -295,7 +308,7 @@ export default function DashboardLayout({
           
           <button
             onClick={handleLogout}
-            className="w-full flex items-center px-4 py-2.5 text-sm font-semibold text-destructive hover:bg-destructive-light rounded-xl transition-colors cursor-pointer"
+            className="w-full flex items-center px-4 py-2 text-sm font-semibold text-destructive hover:bg-destructive-light/60 rounded-xl transition-colors cursor-pointer"
           >
             <LogOut className="mr-3 h-5 w-5 shrink-0" />
             {t('common.signOut')}
@@ -303,12 +316,12 @@ export default function DashboardLayout({
         </div>
       </aside>
 
-      {/* ────────────────── MOBILE MAIN NAVIGATION TRAY ────────────────── */}
-      <nav className="fixed bottom-0 left-0 right-0 md:hidden bg-card border-t border-border z-30 h-16 flex items-center justify-around px-4">
+      {/* ────────────────── MOBILE MAIN NAVIGATION TRAY (Claymorphic Floating Dock) ────────────────── */}
+      <nav className="fixed bottom-3 left-3 right-3 md:hidden bg-card/95 backdrop-blur-md border border-white/70 dark:border-white/10 rounded-3xl shadow-[0_12px_28px_-4px_rgba(148,163,184,0.35),inset_1.5px_1.5px_3px_rgba(255,255,255,0.95)] dark:shadow-[0_12px_28px_-4px_rgba(0,0,0,0.7),inset_1.5px_1.5px_3px_rgba(255,255,255,0.08)] z-30 h-16 flex items-center justify-around px-2">
         <Link
           href="/home"
-          className={`flex flex-col items-center justify-center flex-1 h-full text-xs font-bold transition-colors ${
-            pathname === "/home" ? "text-primary" : "text-foreground-muted hover:text-foreground"
+          className={`flex flex-col items-center justify-center flex-1 h-full text-xs font-bold transition-all ${
+            pathname === "/home" ? "text-primary scale-105" : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <Home className="h-5 w-5 mb-0.5" />
@@ -317,8 +330,8 @@ export default function DashboardLayout({
 
         <Link
           href="/transactions"
-          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-colors ${
-            pathname === "/transactions" ? "text-primary" : "text-foreground-muted hover:text-foreground"
+          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-all ${
+            pathname === "/transactions" ? "text-primary scale-105" : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <List className="h-5 w-5 mb-0.5" />
@@ -327,8 +340,8 @@ export default function DashboardLayout({
 
         <Link
           href="/ledger"
-          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-colors ${
-            pathname === "/ledger" ? "text-primary" : "text-foreground-muted hover:text-foreground"
+          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-all ${
+            pathname === "/ledger" ? "text-primary scale-105" : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <BookOpen className="h-5 w-5 mb-0.5" />
@@ -336,27 +349,27 @@ export default function DashboardLayout({
         </Link>
 
         {/* Central Prominent Mobile Floating Action Button (FAB) */}
-        <div className="relative -top-4 flex items-center justify-center gap-2">
+        <div className="relative -top-5 flex items-center justify-center gap-2">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="w-14 h-14 rounded-full bg-brand text-brand-foreground shadow-lg flex items-center justify-center hover:bg-brand-hover hover:scale-105 active:scale-95 transition-all focus:outline-none border-[3px] border-background cursor-pointer"
+            className="w-13 h-13 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-[0_8px_20px_-2px_rgba(234,88,12,0.5),inset_2px_2px_3px_rgba(255,255,255,0.5),inset_-2px_-2px_4px_rgba(0,0,0,0.25)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all focus:outline-none border-2 border-white dark:border-slate-800 cursor-pointer"
             aria-label="Add Transaction"
           >
-            <Plus className="w-7 h-7" />
+            <Plus className="w-6 h-6" />
           </button>
           <button
             onClick={() => setIsVoiceOpen(true)}
-            className="absolute -right-12 bottom-1 w-10 h-10 rounded-full bg-primary-lighter text-primary shadow-md flex items-center justify-center hover:bg-primary hover:text-white transition-all focus:outline-none border-2 border-background cursor-pointer"
+            className="absolute -right-11 bottom-0.5 w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-[0_6px_14px_-2px_rgba(37,99,235,0.4),inset_1.5px_1.5px_2px_rgba(255,255,255,0.5),inset_-1.5px_-1.5px_3px_rgba(0,0,0,0.25)] flex items-center justify-center hover:scale-105 active:scale-95 transition-all focus:outline-none border-2 border-white dark:border-slate-800 cursor-pointer"
             aria-label="Voice Logging"
           >
-            <Mic className="w-5 h-5" />
+            <Mic className="w-4 h-4" />
           </button>
         </div>
 
         <Link
           href="/analytics"
-          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-colors ${
-            pathname === "/analytics" ? "text-primary" : "text-foreground-muted hover:text-foreground"
+          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-all ${
+            pathname === "/analytics" ? "text-primary scale-105" : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <BarChart3 className="h-5 w-5 mb-0.5" />
@@ -365,8 +378,8 @@ export default function DashboardLayout({
 
         <Link
           href="/settings"
-          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-colors ${
-            pathname === "/settings" ? "text-primary" : "text-foreground-muted hover:text-foreground"
+          className={`flex flex-col items-center justify-center flex-1 h-full text-[10px] font-bold transition-all ${
+            pathname === "/settings" ? "text-primary scale-105" : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <Settings className="h-5 w-5 mb-0.5" />

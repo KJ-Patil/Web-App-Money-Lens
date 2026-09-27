@@ -242,7 +242,7 @@
     "dangerZone": "Danger Zone",
     "dangerDescription": "Permanently erase all local IndexedDB state containers, transactions, and preferences from this device.",
     "clearAllData": "Clear All Data",
-    "requireEmailVerification": "Require email verification before deleting — we'll send a code to {email} that you must enter to confirm.",
+    "requireEmailVerification": "Require account verification ({email}) with password or Google before deleting.",
     "areYouSure": "Are you absolutely sure?",
     "wipeWarning": "This action will drop all local tables and wipe your ledger clean. It cannot be undone.",
     "yesWipeIt": "Yes, wipe it",

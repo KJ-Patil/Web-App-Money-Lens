@@ -132,7 +132,7 @@ export default function TransactionsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight sm:text-3xl">
+          <h1 className="text-2xl font-black text-foreground tracking-tight sm:text-3xl">
             {t('transactions.ledgerWorkspace')}
           </h1>
           <p className="text-sm font-medium text-foreground-muted">
@@ -141,61 +141,61 @@ export default function TransactionsPage() {
         </div>
         <button
           onClick={() => setIsAddOpen(true)}
-          className="btn-primary shrink-0 flex items-center justify-center gap-2"
+          className="clay-btn-brand text-white shadow-clay-primary shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-black text-sm active:scale-95 transition-all cursor-pointer"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-4 h-4 stroke-[3px]" />
           {t('transactions.addTransaction')}
         </button>
       </div>
 
       {/* ────────────────── SEARCH AND FILTERS ────────────────── */}
-      <section className="bg-card border border-border p-4 rounded-2xl shadow-sm space-y-4">
+      <section className="clay-card p-5 rounded-3xl space-y-4">
         {/* Search Input */}
         <div className="relative">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-icon-muted">
-            <Search className="w-5 h-5" />
+          <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-icon-muted pointer-events-none">
+            <Search className="w-5 h-5 text-primary/70" />
           </span>
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="input-base pl-10 w-full"
+            className="w-full pl-11 pr-4 py-3.5 rounded-2xl clay-inset text-foreground placeholder:text-foreground-muted/60 font-semibold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20"
             placeholder={t('transactions.filterPlaceholder')}
           />
         </div>
 
         {/* Income / expense totals for the currently-searched transactions */}
         {searchQuery.trim() !== "" && (
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-background-subtle border border-border p-3.5 rounded-xl flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-success-light text-success flex items-center justify-center shrink-0 border border-success/15">
-                <ArrowUpRight className="w-4 h-4 stroke-[2.5px]" />
+          <div className="grid grid-cols-2 gap-3.5">
+            <div className="clay-surface-sm p-4 rounded-2xl flex items-center gap-3.5 border border-emerald-500/10">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.4),1px_2px_4px_rgba(0,0,0,0.06)]">
+                <ArrowUpRight className="w-5 h-5 stroke-[2.5px]" />
               </div>
               <div>
-                <span className="text-[9px] font-bold text-foreground-secondary uppercase tracking-wider block">
+                <span className="text-[10px] font-extrabold text-foreground-secondary uppercase tracking-wider block">
                   Total Income
-                  <span className="ml-1.5 normal-case text-foreground-muted">
+                  <span className="ml-1.5 normal-case text-foreground-muted font-bold">
                     · {filteredTotals.incomeCount} {filteredTotals.incomeCount === 1 ? "time" : "times"}
                   </span>
                 </span>
-                <span className="text-lg font-black tracking-tight text-success">
+                <span className="text-lg font-black tracking-tight text-emerald-600 dark:text-emerald-400">
                   {formatAmount(filteredTotals.income, activeCurrency)}
                 </span>
               </div>
             </div>
 
-            <div className="bg-background-subtle border border-border p-3.5 rounded-xl flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-error-light text-error flex items-center justify-center shrink-0 border border-error/15">
-                <ArrowDownRight className="w-4 h-4 stroke-[2.5px]" />
+            <div className="clay-surface-sm p-4 rounded-2xl flex items-center gap-3.5 border border-rose-500/10">
+              <div className="w-10 h-10 rounded-2xl bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.4),1px_2px_4px_rgba(0,0,0,0.06)]">
+                <ArrowDownRight className="w-5 h-5 stroke-[2.5px]" />
               </div>
               <div>
-                <span className="text-[9px] font-bold text-foreground-secondary uppercase tracking-wider block">
+                <span className="text-[10px] font-extrabold text-foreground-secondary uppercase tracking-wider block">
                   Total Expense
-                  <span className="ml-1.5 normal-case text-foreground-muted">
+                  <span className="ml-1.5 normal-case text-foreground-muted font-bold">
                     · {filteredTotals.expenseCount} {filteredTotals.expenseCount === 1 ? "time" : "times"}
                   </span>
                 </span>
-                <span className="text-lg font-black tracking-tight text-error">
+                <span className="text-lg font-black tracking-tight text-rose-600 dark:text-rose-400">
                   {formatAmount(filteredTotals.expense, activeCurrency)}
                 </span>
               </div>
@@ -203,18 +203,18 @@ export default function TransactionsPage() {
           </div>
         )}
 
-        {/* Tab Segment Selector */}
-        <div className="flex border-b border-border">
+        {/* Tab Segment Selector inside sunken clay well */}
+        <div className="clay-inset p-1.5 rounded-2xl flex gap-1.5 bg-slate-200/50 dark:bg-slate-900/50">
           {(["all", "income", "expense"] as const).map((tab) => {
             const isActive = activeTab === tab;
             return (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`py-3 px-6 text-sm font-bold border-b-2 capitalize transition-all cursor-pointer ${
+                className={`flex-1 py-2.5 px-4 text-xs font-black capitalize transition-all rounded-xl cursor-pointer ${
                   isActive
-                    ? "border-primary text-primary font-extrabold"
-                    : "border-transparent text-foreground-muted hover:text-foreground hover:border-border"
+                    ? "clay-pill bg-white dark:bg-slate-800 text-primary shadow-clay-sm"
+                    : "text-foreground-muted hover:text-foreground"
                 }`}
               >
                 {tab}
@@ -227,7 +227,7 @@ export default function TransactionsPage() {
       {/* ────────────────── TRANSACTIONS LIST BY DATE ────────────────── */}
       <section className="space-y-6 flex-grow">
         {filteredTransactions.length === 0 ? (
-          <div className="bg-card border border-border rounded-2xl p-12 text-center text-foreground-muted text-sm shadow-sm">
+          <div className="clay-card rounded-3xl p-12 text-center text-foreground-muted text-sm">
             {t('transactions.noMatchingTransactions')}
           </div>
         ) : (
@@ -246,13 +246,13 @@ export default function TransactionsPage() {
 
               return (
                 <div key={blockKey} className="space-y-3">
-                  <h3 className="text-xs font-bold text-foreground-secondary uppercase tracking-widest pl-2 flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-icon-muted" />
+                  <h3 className="text-xs font-black text-foreground-secondary uppercase tracking-widest pl-2 flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5 text-primary" />
                     {blockTitle}
                   </h3>
                   
                   {/* Rows Container */}
-                  <div className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden divide-y divide-border">
+                  <div className="clay-card rounded-3xl overflow-hidden divide-y divide-border/40">
                     {list.map((tx) => {
                       const isEditing = editingId === tx.id;
                       const isDeleting = deleteConfirmId === tx.id;
@@ -260,8 +260,8 @@ export default function TransactionsPage() {
                       return (
                         <div 
                           key={tx.id} 
-                          className={`p-4 transition-all hover:bg-secondary/40 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 ${
-                            isEditing ? "bg-primary-lighter/30" : ""
+                          className={`p-4 transition-all hover:bg-slate-500/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5 ${
+                            isEditing ? "bg-primary/5" : ""
                           }`}
                         >
                           {isEditing ? (
@@ -271,7 +271,7 @@ export default function TransactionsPage() {
                                 type="text"
                                 value={editDescription}
                                 onChange={(e) => setEditDescription(e.target.value)}
-                                className="input-base flex-grow text-sm font-bold"
+                                className="clay-inset px-3.5 py-2.5 rounded-xl flex-grow text-sm font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                                 placeholder={t('transactions.editDescription')}
                                 required
                               />
@@ -279,7 +279,7 @@ export default function TransactionsPage() {
                                 type="number"
                                 value={editAmount}
                                 onChange={(e) => setEditAmount(e.target.value)}
-                                className="input-base w-full sm:w-32 text-sm font-bold"
+                                className="clay-inset px-3.5 py-2.5 rounded-xl w-full sm:w-32 text-sm font-bold text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                                 placeholder="Amount"
                                 min="0.01"
                                 step="0.01"
@@ -289,15 +289,15 @@ export default function TransactionsPage() {
                                 <button
                                   type="button"
                                   onClick={() => handleSaveEdit(tx.id)}
-                                  className="p-2 rounded-xl bg-success text-success-foreground hover:bg-success-foreground hover:text-success border border-success transition-all cursor-pointer"
+                                  className="p-2.5 rounded-xl clay-btn-success text-white transition-all active:scale-95 cursor-pointer shadow-clay-sm"
                                   title="Save Changes"
                                 >
-                                  <Check className="w-4 h-4" />
+                                  <Check className="w-4 h-4 stroke-[3px]" />
                                 </button>
                                 <button
                                   type="button"
                                   onClick={() => setEditingId(null)}
-                                  className="p-2 rounded-xl bg-card border border-border text-foreground hover:bg-secondary transition-all cursor-pointer"
+                                  className="p-2.5 rounded-xl clay-surface-sm text-foreground-muted hover:text-foreground transition-all active:scale-95 cursor-pointer"
                                   title="Cancel"
                                 >
                                   <X className="w-4 h-4" />
@@ -306,8 +306,8 @@ export default function TransactionsPage() {
                             </div>
                           ) : isDeleting ? (
                             /* Delete Confirmation Banner */
-                            <div className="flex-1 flex items-center justify-between w-full p-2 bg-error-light text-error rounded-xl">
-                              <span className="text-xs font-semibold flex items-center gap-1.5">
+                            <div className="flex-1 flex items-center justify-between w-full p-3 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-2xl">
+                              <span className="text-xs font-bold flex items-center gap-2">
                                 <AlertCircle className="w-4 h-4" />
                                 {t('transactions.deleteEntry')}
                               </span>
@@ -315,14 +315,14 @@ export default function TransactionsPage() {
                                 <button
                                   type="button"
                                   onClick={() => handleDelete(tx.id)}
-                                  className="px-3 py-1.5 text-[10px] font-bold rounded-lg bg-error text-error-foreground hover:bg-error-foreground hover:text-error border border-error transition-all cursor-pointer"
+                                  className="px-3.5 py-1.5 text-xs font-black rounded-xl clay-btn-danger text-white transition-all active:scale-95 cursor-pointer shadow-clay-sm"
                                 >
                                   {t('common.confirm')}
                                 </button>
                                 <button
                                   type="button"
                                   onClick={() => setDeleteConfirmId(null)}
-                                  className="px-3 py-1.5 text-[10px] font-bold rounded-lg bg-card border border-border text-foreground hover:bg-secondary transition-all cursor-pointer"
+                                  className="px-3.5 py-1.5 text-xs font-bold rounded-xl clay-surface-sm text-foreground transition-all active:scale-95 cursor-pointer"
                                 >
                                   {t('common.cancel')}
                                 </button>
@@ -332,34 +332,34 @@ export default function TransactionsPage() {
                             /* Standard View Row */
                             <>
                               {/* Left Columns (Description, Category) */}
-                              <div className="flex items-start gap-3 flex-1 min-w-0">
-                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border border-border ${
+                              <div className="flex items-start gap-3.5 flex-1 min-w-0">
+                                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.4),1px_3px_6px_rgba(0,0,0,0.06)] border ${
                                   tx.type === "income" 
-                                    ? "bg-success-light text-success" 
-                                    : "bg-error-light text-error"
+                                    ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" 
+                                    : "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/20"
                                 }`}>
                                   {tx.type === "income" ? (
-                                    <ArrowUpRight className="w-5 h-5" />
+                                    <ArrowUpRight className="w-5 h-5 stroke-[2.5px]" />
                                   ) : (
-                                    <ArrowDownRight className="w-5 h-5" />
+                                    <ArrowDownRight className="w-5 h-5 stroke-[2.5px]" />
                                   )}
                                 </div>
-                                <div className="space-y-0.5 min-w-0">
-                                  <span className="font-extrabold text-foreground text-sm block truncate">
+                                <div className="space-y-1 min-w-0">
+                                  <span className="font-black text-foreground text-sm block truncate">
                                     {tx.description}
                                   </span>
-                                  <span className="text-[10px] font-bold text-foreground-secondary uppercase tracking-wider bg-secondary px-2 py-0.5 rounded-md inline-flex items-center gap-1 border border-border">
-                                    <Tag className="w-2.5 h-2.5 text-icon-muted" />
+                                  <span className="text-[10px] font-extrabold text-foreground-secondary uppercase tracking-wider clay-surface-sm px-2.5 py-0.5 rounded-lg inline-flex items-center gap-1.5">
+                                    <Tag className="w-3 h-3 text-primary/70" />
                                     {tx.category}
                                   </span>
                                 </div>
                               </div>
 
                               {/* Right Columns (Amount, Action Buttons) */}
-                              <div className="flex items-center justify-between sm:justify-end gap-6 shrink-0 border-t sm:border-0 pt-3 sm:pt-0 border-border">
+                              <div className="flex items-center justify-between sm:justify-end gap-6 shrink-0 border-t sm:border-0 pt-3 sm:pt-0 border-border/40">
                                 <div className="flex flex-col items-end">
                                   <span className={`text-base font-black tracking-tight ${
-                                    tx.type === "income" ? "text-success" : "text-foreground"
+                                    tx.type === "income" ? "text-emerald-600 dark:text-emerald-400" : "text-foreground"
                                   }`}>
                                     {tx.type === "income" ? "+" : "-"}
                                     {formatAmount(tx.amount, activeCurrency)}
@@ -369,27 +369,27 @@ export default function TransactionsPage() {
                                       <span className="text-foreground-muted line-through">
                                         {formatAmount(tx.originalAmount, activeCurrency)}
                                       </span>
-                                      <span className="text-success ml-1.5">
+                                      <span className="text-emerald-600 dark:text-emerald-400 font-bold ml-1.5">
                                         {t('common.saved')} {formatAmount(tx.discountAmount, activeCurrency)}
                                       </span>
                                     </span>
                                   )}
                                 </div>
                                 
-                                <div className="flex gap-2">
+                                <div className="flex gap-1.5">
                                   <button
                                     onClick={() => startEdit(tx)}
-                                    className="p-2 text-icon-default hover:text-icon-active hover:bg-secondary rounded-xl transition-all cursor-pointer"
+                                    className="p-2.5 text-foreground-muted hover:text-primary hover:scale-105 active:scale-95 clay-surface-sm rounded-xl transition-all cursor-pointer"
                                     title="Edit Transaction"
                                   >
-                                    <Edit2 className="w-4 h-4" />
+                                    <Edit2 className="w-3.5 h-3.5" />
                                   </button>
                                   <button
                                     onClick={() => setDeleteConfirmId(tx.id)}
-                                    className="p-2 text-icon-default hover:text-error hover:bg-error-light rounded-xl transition-all cursor-pointer"
+                                    className="p-2.5 text-foreground-muted hover:text-rose-500 hover:scale-105 active:scale-95 clay-surface-sm rounded-xl transition-all cursor-pointer"
                                     title="Delete Transaction"
                                   >
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash2 className="w-3.5 h-3.5" />
                                   </button>
                                 </div>
                               </div>

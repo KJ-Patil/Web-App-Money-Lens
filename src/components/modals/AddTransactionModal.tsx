@@ -164,18 +164,18 @@ export default function AddTransactionModal({
       
       {/* Drawer overlay on Mobile, Modal Container on Desktop */}
       <div 
-        className="w-full bg-card border-t md:border border-border rounded-t-3xl md:rounded-2xl max-w-lg shadow-2xl overflow-hidden animate-in slide-in-from-bottom md:slide-in-from-bottom-0 md:zoom-in-95 duration-300 max-h-[90vh] md:max-h-none flex flex-col"
+        className="w-full bg-card border-t md:border border-border rounded-t-3xl md:rounded-3xl max-w-lg shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25),inset_2px_2px_4px_rgba(255,255,255,0.9)] dark:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.7),inset_2px_2px_4px_rgba(255,255,255,0.08)] overflow-hidden animate-in slide-in-from-bottom md:slide-in-from-bottom-0 md:zoom-in-95 duration-300 max-h-[90vh] md:max-h-none flex flex-col"
         role="dialog"
       >
         {/* Header */}
-        <div className="px-6 py-5 border-b border-border flex justify-between items-center bg-background-subtle">
+        <div className="px-6 py-5 border-b border-border/80 flex justify-between items-center bg-background-subtle">
           <div>
             <h3 className="text-lg font-black text-foreground">Record Transaction</h3>
             <p className="text-xs font-semibold text-foreground-muted">Update ledger balance instant data syncs.</p>
           </div>
           <button
             onClick={onClose}
-            className="text-icon-muted hover:text-icon-active p-1.5 rounded-lg hover:bg-secondary transition-colors cursor-pointer"
+            className="text-icon-muted hover:text-icon-active p-1.5 rounded-xl hover:bg-secondary transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -185,7 +185,7 @@ export default function AddTransactionModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
           {success ? (
             <div className="flex flex-col items-center justify-center py-8 text-center space-y-4">
-              <div className="w-14 h-14 rounded-full bg-success-light text-success flex items-center justify-center shadow-sm">
+              <div className="w-14 h-14 rounded-full bg-success-light text-success flex items-center justify-center shadow-[0_4px_12px_rgba(5,150,105,0.2),inset_1.5px_1.5px_3px_rgba(255,255,255,0.9)]">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <div className="space-y-1">
@@ -193,7 +193,7 @@ export default function AddTransactionModal({
                 <p className="text-sm text-foreground-muted">Ledger calculations synced in real-time.</p>
               </div>
               {alertMessage && (
-                <div className="flex items-center gap-2 p-3 text-xs text-warning bg-warning-light rounded-xl font-medium max-w-sm mt-2">
+                <div className="flex items-center gap-2 p-3 text-xs text-warning bg-warning-light rounded-2xl font-medium max-w-sm mt-2 shadow-xs">
                   <AlertTriangle className="w-4 h-4 shrink-0 text-brand" />
                   <span className="text-left leading-relaxed text-brand-hover">{alertMessage}</span>
                 </div>
@@ -206,7 +206,7 @@ export default function AddTransactionModal({
                 <span className="text-xs font-bold text-foreground-secondary uppercase tracking-wider">
                   Transaction Mode
                 </span>
-                <div className="grid grid-cols-2 gap-2 p-1 bg-secondary rounded-xl relative">
+                <div className="grid grid-cols-2 gap-2 p-1.5 bg-secondary/80 rounded-2xl shadow-[inset_1.5px_1.5px_3px_rgba(148,163,184,0.3),inset_-1px_-1px_2px_rgba(255,255,255,0.8)] dark:shadow-[inset_1.5px_1.5px_3px_rgba(0,0,0,0.6)] relative">
                   <button
                     type="button"
                     onClick={() => {
@@ -216,9 +216,9 @@ export default function AddTransactionModal({
                         setCategory(expenseCategories[0]?.name ?? "");
                       }
                     }}
-                    className={`py-2.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                    className={`py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
                       transactionType === "expense"
-                        ? "bg-destructive text-destructive-foreground shadow-sm font-extrabold"
+                        ? "clay-btn-danger font-extrabold"
                         : "text-foreground-secondary hover:text-foreground"
                     }`}
                   >
@@ -233,9 +233,9 @@ export default function AddTransactionModal({
                         setCategory(incomeCategories[0]?.name ?? "");
                       }
                     }}
-                    className={`py-2.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                    className={`py-2.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
                       transactionType === "income"
-                        ? "bg-success text-success-foreground shadow-sm font-extrabold"
+                        ? "clay-btn-success font-extrabold"
                         : "text-foreground-secondary hover:text-foreground"
                     }`}
                   >
@@ -354,8 +354,8 @@ export default function AddTransactionModal({
                         onClick={() => { setCategory(opt.name); setShowOther(false); }}
                         className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all cursor-pointer ${
                           isSelected
-                            ? "bg-primary-lighter text-primary border-primary font-bold scale-105"
-                            : "bg-card border-border text-icon-default hover:bg-secondary hover:text-foreground"
+                            ? "bg-primary text-white border-transparent font-bold scale-105 shadow-[0_6px_14px_-2px_rgba(29,78,216,0.45),inset_1.5px_1.5px_2.5px_rgba(255,255,255,0.45),inset_-1.5px_-1.5px_2.5px_rgba(15,23,42,0.3)]"
+                            : "bg-card border-border text-icon-default hover:bg-secondary/70 hover:text-foreground shadow-[3px_5px_10px_-2px_rgba(148,163,184,0.2),inset_1px_1px_2px_rgba(255,255,255,0.9)] dark:shadow-[0_4px_8px_-2px_rgba(0,0,0,0.5)]"
                         }`}
                       >
                         <Icon className="w-5 h-5 mb-1" />
@@ -370,8 +370,8 @@ export default function AddTransactionModal({
                     onClick={() => setShowOther((v) => !v)}
                     className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all cursor-pointer ${
                       showOther || isExtraCategory(category) || isIncomeExtraCategory(category)
-                        ? "bg-primary-lighter text-primary border-primary font-bold scale-105"
-                        : "bg-card border-border text-icon-default hover:bg-secondary hover:text-foreground"
+                        ? "bg-primary text-white border-transparent font-bold scale-105 shadow-[0_6px_14px_-2px_rgba(29,78,216,0.45),inset_1.5px_1.5px_2.5px_rgba(255,255,255,0.45),inset_-1.5px_-1.5px_2.5px_rgba(15,23,42,0.3)]"
+                        : "bg-card border-border text-icon-default hover:bg-secondary/70 hover:text-foreground shadow-[3px_5px_10px_-2px_rgba(148,163,184,0.2),inset_1px_1px_2px_rgba(255,255,255,0.9)] dark:shadow-[0_4px_8px_-2px_rgba(0,0,0,0.5)]"
                     }`}
                   >
                     <MoreHorizontal className="w-5 h-5 mb-1" />

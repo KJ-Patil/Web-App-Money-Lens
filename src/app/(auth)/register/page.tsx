@@ -100,7 +100,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center px-4 pt-24 pb-12 bg-background-subtle">
+    <main className="flex min-h-screen flex-1 flex-col items-center justify-center px-4 py-8 bg-background-subtle">
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">

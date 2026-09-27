@@ -17,6 +17,7 @@ import {
   onAuthStateChanged,
   updateProfile,
   sendPasswordResetEmail,
+  signOut,
   type User as FirebaseUser,
 } from "firebase/auth";
 import {
@@ -263,13 +264,33 @@ export default function SettingsPage() {
     }
   };
 
+  const [resettingPassword, setResettingPassword] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+
   const handleSendPasswordReset = async () => {
-    if (!userEmail) return;
+    if (!userEmail || resettingPassword) return;
+    setResettingPassword(true);
     try {
       await sendPasswordResetEmail(auth, userEmail);
       toast.success("Password reset link sent to your email!");
     } catch (err) {
       toast.error("Failed to send password reset email.");
+    } finally {
+      setResettingPassword(false);
+    }
+  };
+
+  const handleSignOutEverywhere = async () => {
+    setSigningOut(true);
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error("Sign out error:", err);
+    } finally {
+      localStorage.removeItem("user_session");
+      localStorage.removeItem("user_pin");
+      toast.success(t("common.signOut") || "Signed out successfully.");
+      window.location.href = "/login";
     }
   };
 
@@ -353,11 +374,11 @@ export default function SettingsPage() {
       </div>
 
       {/* User Profile Module */}
-      <section className="bg-card border border-border-strong rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row items-center gap-6">
+      <section className="clay-card rounded-3xl p-6 md:p-7 flex flex-col sm:flex-row items-center gap-6">
         <button
           type="button"
           onClick={() => (userAvatar ? setIsPhotoViewerOpen(true) : setIsEditProfileOpen(true))}
-          className="group relative w-20 h-20 rounded-full bg-primary-lighter text-primary flex items-center justify-center border-4 border-background shadow-inner shrink-0 overflow-hidden cursor-pointer"
+          className="group relative w-20 h-20 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 text-primary flex items-center justify-center border-4 border-white dark:border-white/10 shadow-clay-sm shrink-0 overflow-hidden cursor-pointer"
           title={userAvatar ? "View profile photo" : "Add profile photo"}
         >
           {userAvatar ? (
@@ -374,19 +395,28 @@ export default function SettingsPage() {
           <h2 className="text-xl font-black text-foreground">{userName}</h2>
           <p className="text-sm font-semibold text-foreground-secondary">{userEmail || t('settings.noEmailOnFile')}</p>
         </div>
-        <div className="flex flex-col gap-3 w-full sm:w-auto">
-          <button onClick={() => setIsEditProfileOpen(true)} className="btn-secondary text-xs flex items-center justify-center gap-2">
-            <Pencil className="w-4 h-4" />
+        <div className="flex flex-col gap-2.5 w-full sm:w-auto">
+          <button
+            onClick={() => setIsEditProfileOpen(true)}
+            className="clay-surface-sm hover:scale-102 active:scale-95 text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer text-foreground"
+          >
+            <Pencil className="w-4 h-4 text-primary" />
             Edit Profile
           </button>
           {userAvatar && (
-            <button onClick={handleRemovePhoto} className="btn-secondary text-xs flex items-center justify-center gap-2 text-error">
+            <button
+              onClick={handleRemovePhoto}
+              className="clay-surface-sm hover:scale-102 active:scale-95 text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer text-rose-500"
+            >
               <Trash2 className="w-4 h-4" />
               Remove Photo
             </button>
           )}
-          <button onClick={resetPin} className="btn-secondary text-xs flex items-center justify-center gap-2">
-            <Lock className="w-4 h-4" />
+          <button
+            onClick={resetPin}
+            className="clay-surface-sm hover:scale-102 active:scale-95 text-xs font-bold py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer text-foreground"
+          >
+            <Lock className="w-4 h-4 text-primary" />
             {t('settings.resetPin')}
           </button>
         </div>
@@ -419,18 +449,18 @@ export default function SettingsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Preference Matrices */}
         <section className="space-y-4">
-          <h3 className="text-xs font-bold text-foreground-secondary uppercase tracking-widest pl-2">
+          <h3 className="text-xs font-black text-foreground-secondary uppercase tracking-widest pl-2">
             {t('settings.localPreferences')}
           </h3>
-          <div className="bg-card border border-border-strong rounded-2xl overflow-hidden shadow-sm">
+          <div className="clay-card rounded-3xl overflow-hidden divide-y divide-border/40">
             
             <button 
               onClick={() => setIsCurrencySheetOpen(true)}
-              className="w-full flex items-center justify-between p-4 border-b border-border hover:bg-secondary transition-colors text-left"
+              className="w-full flex items-center justify-between p-4 hover:bg-slate-500/5 transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default">
-                  <Globe className="w-5 h-5" />
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-primary">
+                  <Globe className="w-5 h-5 stroke-[2.2px]" />
                 </div>
                 <div>
                   <span className="font-bold text-sm text-foreground block">{t('settings.globalCurrency')}</span>
@@ -445,11 +475,11 @@ export default function SettingsPage() {
 
             <button
               onClick={() => setIsLanguageSheetOpen(true)}
-              className="w-full flex items-center justify-between p-4 border-b border-border hover:bg-secondary transition-colors text-left"
+              className="w-full flex items-center justify-between p-4 hover:bg-slate-500/5 transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default">
-                  <Languages className="w-5 h-5" />
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-primary">
+                  <Languages className="w-5 h-5 stroke-[2.2px]" />
                 </div>
                 <div>
                   <span className="font-bold text-sm text-foreground block">{t('settings.language')}</span>
@@ -464,11 +494,11 @@ export default function SettingsPage() {
 
             <Link
               href="/settings/categories"
-              className="w-full flex items-center justify-between p-4 border-b border-border hover:bg-secondary transition-colors text-left"
+              className="w-full flex items-center justify-between p-4 hover:bg-slate-500/5 transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default">
-                  <Layers className="w-5 h-5" />
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-primary">
+                  <Layers className="w-5 h-5 stroke-[2.2px]" />
                 </div>
                 <div>
                   <span className="font-bold text-sm text-foreground block">{t('settings.categoryManager')}</span>
@@ -480,11 +510,11 @@ export default function SettingsPage() {
 
             <Link
               href="/settings/sms-gateway"
-              className="w-full flex items-center justify-between p-4 border-b border-border hover:bg-secondary transition-colors text-left"
+              className="w-full flex items-center justify-between p-4 hover:bg-slate-500/5 transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default">
-                  <MessageSquare className="w-5 h-5" />
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-primary">
+                  <MessageSquare className="w-5 h-5 stroke-[2.2px]" />
                 </div>
                 <div>
                   <span className="font-bold text-sm text-foreground block">SMS Gateway</span>
@@ -496,11 +526,11 @@ export default function SettingsPage() {
 
             <Link
               href="/settings/about"
-              className="w-full flex items-center justify-between p-4 border-b border-border hover:bg-secondary transition-colors text-left"
+              className="w-full flex items-center justify-between p-4 hover:bg-slate-500/5 transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default">
-                  <Info className="w-5 h-5" />
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-primary">
+                  <Info className="w-5 h-5 stroke-[2.2px]" />
                 </div>
                 <div>
                   <span className="font-bold text-sm text-foreground block">{t('settings.aboutUs')}</span>
@@ -512,11 +542,11 @@ export default function SettingsPage() {
 
             <Link
               href="/help"
-              className="w-full flex items-center justify-between p-4 hover:bg-secondary transition-colors text-left"
+              className="w-full flex items-center justify-between p-4 hover:bg-slate-500/5 transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default">
-                  <HelpCircle className="w-5 h-5" />
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-primary">
+                  <HelpCircle className="w-5 h-5 stroke-[2.2px]" />
                 </div>
                 <div>
                   <span className="font-bold text-sm text-foreground block">{t('nav.helpSupport')}</span>
@@ -531,38 +561,53 @@ export default function SettingsPage() {
 
         {/* Security & Access */}
         <section className="space-y-4">
-          <h3 className="text-xs font-bold text-foreground-secondary uppercase tracking-widest pl-2">
+          <h3 className="text-xs font-black text-foreground-secondary uppercase tracking-widest pl-2">
             {t('settings.accessControls')}
           </h3>
-          <div className="bg-card border border-border-strong rounded-2xl overflow-hidden shadow-sm">
+          <div className="clay-card rounded-3xl overflow-hidden divide-y divide-border/40">
             
             {fbUser?.providerData.some(p => p.providerId === 'password') && (
               <button 
                 onClick={handleSendPasswordReset}
-                className="w-full flex items-center justify-between p-4 border-b border-border hover:bg-secondary transition-colors text-left group"
+                disabled={resettingPassword}
+                className="w-full flex items-center justify-between p-4 hover:bg-slate-500/5 transition-colors text-left group cursor-pointer disabled:opacity-60"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default">
-                    <Lock className="w-5 h-5" />
+                <div className="flex items-center gap-3.5">
+                  <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-primary">
+                    {resettingPassword ? <RefreshCw className="w-5 h-5 animate-spin text-primary" /> : <Lock className="w-5 h-5 stroke-[2.2px]" />}
                   </div>
                   <div>
-                    <span className="font-bold text-sm text-foreground block">Reset Password</span>
-                    <span className="text-[10px] font-semibold text-foreground-muted block">Send a password reset link to {maskEmail(userEmail)}</span>
+                    <span className="font-bold text-sm text-foreground block">
+                      {resettingPassword ? "Sending reset link…" : "Reset Password"}
+                    </span>
+                    <span className="text-[10px] font-semibold text-foreground-muted block">
+                      Send a password reset link to {maskEmail(userEmail)}
+                    </span>
                   </div>
                 </div>
                 <ArrowRight className="w-4 h-4 text-icon-muted" />
               </button>
             )}
 
-            <button className="w-full flex items-center justify-between p-4 hover:bg-secondary transition-colors text-left group">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center text-icon-default group-hover:text-error transition-colors">
-                  <LogOut className="w-5 h-5" />
+            <button
+              onClick={handleSignOutEverywhere}
+              disabled={signingOut}
+              className="w-full flex items-center justify-between p-4 hover:bg-rose-500/10 transition-colors text-left group cursor-pointer disabled:opacity-60"
+            >
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 rounded-2xl clay-surface-sm flex items-center justify-center text-icon-default group-hover:text-rose-500 transition-colors">
+                  {signingOut ? <RefreshCw className="w-5 h-5 animate-spin text-rose-500" /> : <LogOut className="w-5 h-5 stroke-[2.2px]" />}
                 </div>
                 <div>
-                  <span className="font-bold text-sm text-foreground block group-hover:text-error transition-colors">{t('settings.signOutEverywhere')}</span>
+                  <span className="font-bold text-sm text-foreground block group-hover:text-rose-500 transition-colors">
+                    {signingOut ? "Signing out…" : t('settings.signOutEverywhere')}
+                  </span>
+                  <span className="text-[10px] font-semibold text-foreground-muted block">
+                    Terminate active session and lock device
+                  </span>
                 </div>
               </div>
+              <ArrowRight className="w-4 h-4 text-icon-muted group-hover:text-rose-500 transition-colors" />
             </button>
 
           </div>
@@ -570,14 +615,14 @@ export default function SettingsPage() {
       </div>
 
       {/* Backup & Recovery */}
-      <section className="bg-card border border-border-strong rounded-2xl p-6 shadow-sm flex flex-col gap-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+      <section className="clay-card rounded-3xl p-6 md:p-7 flex flex-col gap-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-primary-lighter text-primary flex items-center justify-center">
+            <div className="w-12 h-12 rounded-2xl clay-surface-sm text-primary flex items-center justify-center">
               <Database className="w-6 h-6" />
             </div>
             <div>
-              <h3 className="font-extrabold text-foreground text-lg">
+              <h3 className="font-black text-foreground text-lg">
                 {t('settings.backupAndRecovery')}
               </h3>
               <p className="text-xs font-semibold text-foreground-muted">
@@ -590,7 +635,7 @@ export default function SettingsPage() {
             <button
               onClick={handleCreateBackup}
               disabled={backupActionLoading || loadingBackups}
-              className="btn-primary text-xs flex items-center justify-center gap-2 w-full sm:w-auto self-start sm:self-center disabled:opacity-50"
+              className="clay-btn-brand text-white text-xs font-black py-2.5 px-4 rounded-2xl flex items-center justify-center gap-2 w-full sm:w-auto self-start sm:self-center disabled:opacity-50 transition-all active:scale-95 cursor-pointer"
             >
               {backupActionLoading ? (
                 <>
@@ -609,10 +654,10 @@ export default function SettingsPage() {
 
         {actionMessage && (
           <div
-            className={`p-3.5 rounded-xl border text-xs font-bold flex items-center gap-2 animate-in fade-in duration-200 ${
+            className={`p-3.5 rounded-2xl border text-xs font-bold flex items-center gap-2 animate-in fade-in duration-200 ${
               actionMessage.type === "success"
-                ? "bg-success-light/30 border-success/20 text-success"
-                : "bg-error-light/30 border-error/20 text-error"
+                ? "clay-surface-sm border-success/30 text-success"
+                : "clay-surface-sm border-error/30 text-error"
             }`}
           >
             {actionMessage.type === "success" ? (
@@ -625,7 +670,7 @@ export default function SettingsPage() {
         )}
 
         {!uid ? (
-          <div className="bg-secondary/40 border border-border-strong rounded-xl p-4 text-center">
+          <div className="clay-surface-sm rounded-2xl p-4 text-center">
             <ShieldAlert className="w-8 h-8 text-foreground-muted mx-auto mb-2" />
             <p className="text-xs font-bold text-foreground">Cloud Backups Disabled</p>
             <p className="text-[11px] font-semibold text-foreground-muted mt-1 max-w-md mx-auto">
@@ -640,15 +685,15 @@ export default function SettingsPage() {
             
             {loadingBackups ? (
               <div className="space-y-2 py-4">
-                <div className="h-10 bg-secondary/50 rounded-xl animate-pulse w-full" />
-                <div className="h-10 bg-secondary/50 rounded-xl animate-pulse w-full" />
+                <div className="h-10 bg-secondary/50 rounded-2xl animate-pulse w-full" />
+                <div className="h-10 bg-secondary/50 rounded-2xl animate-pulse w-full" />
               </div>
             ) : backups.length === 0 ? (
-              <p className="text-xs font-semibold text-foreground-muted text-center py-6 bg-secondary/20 rounded-xl">
+              <p className="text-xs font-semibold text-foreground-muted text-center py-6 clay-surface-sm rounded-2xl">
                 {t('settings.noBackups')}
               </p>
             ) : (
-              <div className="border border-border rounded-xl divide-y divide-border overflow-hidden bg-background-subtle">
+              <div className="clay-surface-sm rounded-2xl divide-y divide-border/40 overflow-hidden">
                 {backups.map((backup) => (
                   <div key={backup.id} className="flex items-center justify-between p-3.5 hover:bg-secondary/35 transition-colors">
                     <div className="flex items-center gap-3">
@@ -663,14 +708,14 @@ export default function SettingsPage() {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-3 shrink-0">
+                    <div className="flex items-center gap-2 shrink-0">
                       <button
                         onClick={() => {
                           setSelectedBackup(backup);
                           setBackupModalType("restore");
                         }}
                         disabled={backupActionLoading}
-                        className="text-xs font-black text-primary hover:text-primary-hover transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                        className="clay-surface-sm text-primary hover:text-primary-hover px-3 py-1.5 rounded-xl font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
                         {t('settings.restore')}
@@ -681,7 +726,7 @@ export default function SettingsPage() {
                           setBackupModalType("delete");
                         }}
                         disabled={backupActionLoading}
-                        className="text-xs font-black text-error hover:text-error/80 transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                        className="clay-surface-sm text-error hover:text-error/80 px-3 py-1.5 rounded-xl font-black text-xs flex items-center gap-1.5 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         {t('common.delete') || "Delete"}
@@ -696,7 +741,7 @@ export default function SettingsPage() {
       </section>
 
       {/* Core Data Purging Actions */}
-      <section className="bg-error-light border border-error/20 rounded-2xl p-6 mt-4 flex flex-col gap-5 shadow-sm">
+      <section className="clay-card bg-gradient-to-br from-rose-500/10 via-rose-500/5 to-card border border-rose-500/20 rounded-3xl p-6 md:p-7 mt-4 flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="space-y-1">
             <h3 className="text-error font-extrabold flex items-center gap-2">
@@ -712,21 +757,21 @@ export default function SettingsPage() {
               setClearStage(0);
               setIsClearModalOpen(true);
             }}
-            className="bg-destructive text-destructive-foreground font-black px-6 py-3 rounded-xl hover:opacity-90 transition-opacity w-full sm:w-auto shrink-0"
+            className="clay-btn-danger font-black px-6 py-3 rounded-2xl w-full sm:w-auto shrink-0 cursor-pointer active:scale-95 transition-all"
           >
             {t('settings.clearAllData')}
           </button>
         </div>
 
-        {/* Email verification opt-in */}
-        <label className="flex items-start gap-3 cursor-pointer border-t border-error/15 pt-4">
+        {/* Account verification opt-in */}
+        <label className="clay-surface-sm p-3.5 rounded-2xl flex items-center gap-3 border border-rose-500/20 cursor-pointer transition-all hover:border-rose-500/30">
           <input
             type="checkbox"
             checked={emailVerifyEnabled}
             onChange={(e) => setEmailVerifyEnabled(e.target.checked)}
-            className="mt-0.5 w-4 h-4 accent-error cursor-pointer shrink-0"
+            className="w-4 h-4 accent-rose-500 cursor-pointer shrink-0"
           />
-          <span className="text-xs font-semibold text-error/80">
+          <span className="text-xs font-semibold text-rose-500/90 dark:text-rose-400">
             {t('settings.requireEmailVerification', { email: maskEmail(userEmail) })}
           </span>
         </label>
@@ -748,12 +793,12 @@ export default function SettingsPage() {
 
       {/* Clear Data Multi-stage Modal */}
       {isClearModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-200">
-          <div className="w-full bg-card border border-border rounded-2xl max-w-sm shadow-2xl p-6 space-y-6 text-center animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="w-full clay-card max-w-sm rounded-3xl p-6 md:p-7 space-y-6 text-center animate-in zoom-in-95 duration-300">
             
             {clearStage === 0 && (
               <>
-                <div className="w-16 h-16 rounded-full bg-error-light text-error flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-2xl clay-surface-sm text-error flex items-center justify-center mx-auto mb-4">
                   <ShieldAlert className="w-8 h-8" />
                 </div>
                 <div className="space-y-2">
@@ -763,8 +808,10 @@ export default function SettingsPage() {
                   </p>
                 </div>
                 <div className="flex gap-3 pt-2">
-                  <button onClick={() => setIsClearModalOpen(false)} className="btn-secondary flex-1">{t('common.cancel')}</button>
-                  <button onClick={handleClearData} className="bg-destructive text-destructive-foreground font-bold px-4 rounded-xl flex-1 hover:opacity-90 transition-opacity">
+                  <button onClick={() => setIsClearModalOpen(false)} className="clay-surface-sm font-bold text-foreground hover:bg-secondary/60 py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer">
+                    {t('common.cancel')}
+                  </button>
+                  <button onClick={handleClearData} className="clay-btn-danger font-black py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer">
                     {t('settings.yesWipeIt')}
                   </button>
                 </div>
@@ -773,7 +820,7 @@ export default function SettingsPage() {
 
             {clearStage === 1 && (
               <>
-                <div className="w-16 h-16 rounded-full bg-error text-white flex items-center justify-center mx-auto mb-4 animate-pulse">
+                <div className="w-16 h-16 rounded-2xl clay-surface-sm text-error flex items-center justify-center mx-auto mb-4 animate-pulse">
                   <Trash2 className="w-8 h-8" />
                 </div>
                 <div className="space-y-2">
@@ -783,8 +830,10 @@ export default function SettingsPage() {
                   </p>
                 </div>
                 <div className="flex gap-3 pt-2">
-                  <button onClick={() => setIsClearModalOpen(false)} className="btn-secondary flex-1">{t('settings.abort')}</button>
-                  <button onClick={handleClearData} className="bg-destructive text-destructive-foreground font-black px-4 rounded-xl flex-1 shadow-[0_0_15px_rgba(220,38,38,0.5)]">
+                  <button onClick={() => setIsClearModalOpen(false)} className="clay-surface-sm font-bold text-foreground hover:bg-secondary/60 py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer">
+                    {t('settings.abort')}
+                  </button>
+                  <button onClick={handleClearData} className="clay-btn-danger font-black py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer shadow-[0_0_15px_rgba(220,38,38,0.5)]">
                     {t('settings.deleteNow')}
                   </button>
                 </div>
@@ -793,7 +842,7 @@ export default function SettingsPage() {
 
             {clearStage === 3 && (
               <>
-                <div className="w-16 h-16 rounded-full bg-error-light text-error flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-2xl clay-surface-sm text-error flex items-center justify-center mx-auto mb-4">
                   <Lock className="w-8 h-8" />
                 </div>
                 <div className="space-y-2">
@@ -822,7 +871,7 @@ export default function SettingsPage() {
                     }}
                     placeholder="Your password"
                     autoFocus
-                    className="input-base w-full text-center font-bold"
+                    className="clay-inset w-full text-center font-bold py-2.5 px-4 rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-rose-500/40"
                   />
                 )}
 
@@ -834,14 +883,14 @@ export default function SettingsPage() {
                   <button
                     onClick={() => setIsClearModalOpen(false)}
                     disabled={reauthLoading}
-                    className="btn-secondary flex-1"
+                    className="clay-surface-sm font-bold text-foreground hover:bg-secondary/60 py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer"
                   >
                     {t('common.cancel')}
                   </button>
                   {reauthMethod === "unsupported" ? (
                     <button
                       onClick={() => setClearStage(1)}
-                      className="bg-destructive text-destructive-foreground font-black px-4 rounded-xl flex-1 hover:opacity-90 transition-opacity"
+                      className="clay-btn-danger font-black py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer"
                     >
                       Continue
                     </button>
@@ -849,7 +898,7 @@ export default function SettingsPage() {
                     <button
                       onClick={handleReauthAndPurge}
                       disabled={reauthLoading || (reauthMethod === "password" && !reauthPassword)}
-                      className="bg-destructive text-destructive-foreground font-black px-4 rounded-xl flex-1 hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="clay-btn-danger font-black py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       {reauthLoading
                         ? "Verifying…"
@@ -864,7 +913,7 @@ export default function SettingsPage() {
 
             {clearStage === 2 && (
               <div className="py-6 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-success-light text-success flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-2xl clay-surface-sm text-success flex items-center justify-center mx-auto mb-4">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-black text-foreground">{t('settings.wipeComplete')}</h3>
@@ -880,11 +929,11 @@ export default function SettingsPage() {
 
       {/* Backup Action Confirmation Modals */}
       {backupModalType && selectedBackup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-in fade-in duration-200">
-          <div className="w-full bg-card border border-border rounded-2xl max-w-sm shadow-2xl p-6 space-y-6 text-center animate-in zoom-in-95 duration-300">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="w-full clay-card max-w-sm rounded-3xl p-6 md:p-7 space-y-6 text-center animate-in zoom-in-95 duration-300">
             {backupModalType === "restore" && (
               <>
-                <div className="w-16 h-16 rounded-full bg-primary-lighter text-primary flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-2xl clay-surface-sm text-primary flex items-center justify-center mx-auto mb-4">
                   <RotateCcw className="w-8 h-8" />
                 </div>
                 <div className="space-y-2">
@@ -892,15 +941,15 @@ export default function SettingsPage() {
                   <p className="text-xs font-semibold text-foreground-muted">
                     {t('settings.restoreWarning')}
                   </p>
-                  <p className="text-[11px] font-extrabold text-primary bg-primary-lighter/40 py-2 rounded-lg">
+                  <p className="text-[11px] font-extrabold text-primary clay-surface-sm py-2 px-3 rounded-xl">
                     Target: {formatBackupDate(selectedBackup.createdAt)} ({selectedBackup.label})
                   </p>
                 </div>
                 <div className="flex gap-3 pt-2">
-                  <button onClick={() => { setBackupModalType(null); setSelectedBackup(null); }} className="btn-secondary flex-1">
+                  <button onClick={() => { setBackupModalType(null); setSelectedBackup(null); }} className="clay-surface-sm font-bold text-foreground hover:bg-secondary/60 py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer">
                     {t('common.cancel')}
                   </button>
-                  <button onClick={handleRestoreBackup} className="bg-primary text-white font-bold px-4 rounded-xl flex-1 hover:opacity-90 transition-opacity">
+                  <button onClick={handleRestoreBackup} className="clay-btn-brand text-white font-black py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer">
                     {t('settings.restore')}
                   </button>
                 </div>
@@ -909,7 +958,7 @@ export default function SettingsPage() {
 
             {backupModalType === "delete" && (
               <>
-                <div className="w-16 h-16 rounded-full bg-error-light text-error flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 rounded-2xl clay-surface-sm text-error flex items-center justify-center mx-auto mb-4">
                   <Trash2 className="w-8 h-8" />
                 </div>
                 <div className="space-y-2">
@@ -917,15 +966,15 @@ export default function SettingsPage() {
                   <p className="text-xs font-semibold text-foreground-muted">
                     {t('settings.deleteBackupWarning') || "This will permanently delete this backup snapshot. This cannot be undone. Are you sure?"}
                   </p>
-                  <p className="text-[11px] font-extrabold text-error bg-error-light/40 py-2 rounded-lg">
+                  <p className="text-[11px] font-extrabold text-error clay-surface-sm py-2 px-3 rounded-xl">
                     Target: {formatBackupDate(selectedBackup.createdAt)} ({selectedBackup.label})
                   </p>
                 </div>
                 <div className="flex gap-3 pt-2">
-                  <button onClick={() => { setBackupModalType(null); setSelectedBackup(null); }} className="btn-secondary flex-1">
+                  <button onClick={() => { setBackupModalType(null); setSelectedBackup(null); }} className="clay-surface-sm font-bold text-foreground hover:bg-secondary/60 py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer">
                     {t('common.cancel')}
                   </button>
-                  <button onClick={handleDeleteBackup} className="bg-destructive text-destructive-foreground font-bold px-4 rounded-xl flex-1 hover:opacity-90 transition-opacity">
+                  <button onClick={handleDeleteBackup} className="clay-btn-danger font-black py-2.5 px-4 rounded-xl flex-1 active:scale-95 transition-all cursor-pointer">
                     {t('common.delete')}
                   </button>
                 </div>

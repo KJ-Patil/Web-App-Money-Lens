@@ -240,23 +240,23 @@ export default function SmsPasteZone({
 
   // ─── Render ──────────────────────────────────────────────────────────────
   return (
-    <div className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
+    <div className="bg-card border border-border rounded-3xl shadow-[8px_14px_28px_-4px_rgba(148,163,184,0.25),inset_2px_2px_4px_rgba(255,255,255,0.95),inset_-2.5px_-2.5px_5px_rgba(148,163,184,0.18)] dark:shadow-[0_16px_32px_-6px_rgba(0,0,0,0.55),inset_2px_2px_4px_rgba(255,255,255,0.08)] overflow-hidden">
 
       {/* ── Collapsed trigger bar ── */}
       <button
         type="button"
         onClick={handleToggle}
-        className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-secondary/40 transition-colors cursor-pointer group"
+        className="w-full flex items-center justify-between px-5 py-4 hover:bg-secondary/40 transition-colors cursor-pointer group"
       >
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-primary-lighter text-primary flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors">
-            <ClipboardPaste className="w-4 h-4" />
+        <div className="flex items-center gap-3.5">
+          <div className="w-9 h-9 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:bg-primary/15 transition-colors shadow-[inset_1px_1px_2px_rgba(255,255,255,0.9),inset_-1px_-1px_2px_rgba(29,78,216,0.15)]">
+            <ClipboardPaste className="w-4.5 h-4.5" />
           </div>
           <div className="text-left">
-            <span className="text-sm font-extrabold text-foreground block">
+            <span className="text-sm font-black text-foreground block">
               SMS Auto-Parser
             </span>
-            <span className="text-[10px] font-medium text-foreground-muted">
+            <span className="text-[11px] font-semibold text-foreground-muted">
               Paste a bank alert to auto-extract transaction details
             </span>
           </div>
@@ -264,21 +264,21 @@ export default function SmsPasteZone({
 
         <div className="flex items-center gap-2 shrink-0">
           {uiState === "saved" && (
-            <span className="flex items-center gap-1 text-[10px] font-bold text-success bg-success-light px-2.5 py-1 rounded-full">
+            <span className="flex items-center gap-1 text-[10px] font-bold text-success bg-success-light px-2.5 py-1 rounded-full shadow-xs">
               <CheckCircle2 className="w-3 h-3" />
               Saved
             </span>
           )}
           {uiState === "error" && (
-            <span className="flex items-center gap-1 text-[10px] font-bold text-error bg-error-light px-2.5 py-1 rounded-full">
+            <span className="flex items-center gap-1 text-[10px] font-bold text-error bg-error-light px-2.5 py-1 rounded-full shadow-xs">
               <AlertCircle className="w-3 h-3" />
               Not recognised
             </span>
           )}
-          <span className={`text-[10px] font-bold px-2 py-1 rounded-lg transition-colors ${
+          <span className={`text-[10px] font-bold px-3 py-1 rounded-xl transition-all shadow-xs ${
             isExpanded
-              ? "bg-primary text-primary-foreground"
-              : "bg-secondary text-foreground-muted group-hover:bg-secondary/80"
+              ? "bg-primary text-primary-foreground shadow-[inset_1px_1px_2px_rgba(255,255,255,0.4),0_4px_8px_rgba(29,78,216,0.3)]"
+              : "bg-secondary text-foreground-secondary group-hover:bg-secondary/80 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.8),inset_-1px_-1px_2px_rgba(148,163,184,0.15)]"
           }`}>
             {isExpanded ? "Close" : "Open"}
           </span>

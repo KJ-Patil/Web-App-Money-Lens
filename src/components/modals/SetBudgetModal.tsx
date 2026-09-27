@@ -74,24 +74,23 @@ export default function SetBudgetModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 md:items-center p-0 md:p-4 animate-in fade-in duration-200">
-      
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 backdrop-blur-sm md:items-center p-0 md:p-4 animate-in fade-in duration-200">
       {/* Modal Container */}
       <div 
-        className="w-full bg-card border-t md:border border-border rounded-t-3xl md:rounded-2xl max-w-md shadow-2xl flex flex-col animate-in slide-in-from-bottom md:zoom-in-95 duration-300"
+        className="w-full clay-card rounded-t-[32px] md:rounded-3xl max-w-md shadow-clay-lg flex flex-col animate-in slide-in-from-bottom md:zoom-in-95 duration-300 overflow-hidden"
         role="dialog"
       >
         {/* Header */}
-        <div className="px-6 py-5 border-b border-border flex justify-between items-center bg-background-subtle">
+        <div className="px-6 py-5 border-b border-border/40 flex justify-between items-center bg-slate-500/5">
           <div>
             <h3 className="text-lg font-black text-foreground">Adjust Category Budget</h3>
             <p className="text-xs font-semibold text-foreground-muted">Configure active expenditure limit caps.</p>
           </div>
           <button
             onClick={onClose}
-            className="text-icon-muted hover:text-icon-active p-1.5 rounded-lg hover:bg-secondary transition-colors cursor-pointer"
+            className="text-foreground-muted hover:text-foreground p-2 rounded-xl clay-surface-sm hover:scale-105 active:scale-95 transition-all cursor-pointer"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
@@ -99,19 +98,19 @@ export default function SetBudgetModal({
         <form onSubmit={handleSubmit} className="p-6 space-y-5">
           {success ? (
             <div className="flex flex-col items-center justify-center py-6 text-center space-y-3">
-              <div className="w-12 h-12 rounded-full bg-success-light text-success flex items-center justify-center shadow-sm">
-                <Check className="w-6 h-6 stroke-[3px]" />
+              <div className="w-14 h-14 rounded-2xl clay-btn-success text-white flex items-center justify-center shadow-clay-success">
+                <Check className="w-7 h-7 stroke-[3px]" />
               </div>
               <div>
-                <h4 className="font-extrabold text-foreground">Budget Adjusted</h4>
-                <p className="text-sm text-foreground-muted">Expenditure alert lines updated successfully.</p>
+                <h4 className="font-black text-foreground text-base">Budget Adjusted</h4>
+                <p className="text-xs font-semibold text-foreground-muted">Expenditure alert lines updated successfully.</p>
               </div>
             </div>
           ) : (
             <>
               {/* Category Chips Selector */}
               <div className="space-y-2">
-                <span className="text-xs font-bold text-foreground-secondary uppercase tracking-wider block">
+                <span className="text-[10px] font-extrabold text-foreground-secondary uppercase tracking-wider block">
                   Select Category
                 </span>
                 <div className="flex flex-wrap gap-2">
@@ -122,10 +121,10 @@ export default function SetBudgetModal({
                         key={cat}
                         type="button"
                         onClick={() => handleCategorySelect(cat)}
-                        className={`px-4 py-2 text-xs font-bold rounded-xl border transition-all cursor-pointer ${
+                        className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${
                           isSelected
-                            ? "bg-primary-lighter text-primary border-primary scale-102 shadow-sm font-extrabold"
-                            : "bg-background border-border text-foreground-secondary hover:bg-secondary hover:text-foreground"
+                            ? "clay-btn-brand text-white shadow-clay-primary scale-102"
+                            : "clay-surface-sm text-foreground-secondary hover:text-foreground hover:scale-105 active:scale-95"
                         }`}
                       >
                         {cat}
@@ -136,12 +135,12 @@ export default function SetBudgetModal({
               </div>
 
               {/* Numeric Limit Input */}
-              <div className="space-y-1">
-                <label htmlFor="limit" className="text-xs font-bold text-foreground-secondary uppercase tracking-wider">
+              <div className="space-y-1.5">
+                <label htmlFor="limit" className="text-[10px] font-extrabold text-foreground-secondary uppercase tracking-wider">
                   Monthly Capital Limit ({activeCurrency})
                 </label>
                 <div className="relative flex items-center">
-                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 font-bold text-foreground-secondary pointer-events-none">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-4 font-black text-primary pointer-events-none">
                     {getCurrencySymbol(activeCurrency) || "₹"}
                   </span>
                   <input
@@ -149,7 +148,7 @@ export default function SetBudgetModal({
                     type="number"
                     value={limit}
                     onChange={(e) => setLimit(e.target.value)}
-                    className="input-base pl-9 pr-3 w-full text-base font-extrabold tracking-tight"
+                    className="clay-inset pl-9 pr-4 py-3.5 w-full text-base font-black tracking-tight rounded-2xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                     placeholder="Enter limit threshold"
                     min="1"
                     step="1"
@@ -164,15 +163,15 @@ export default function SetBudgetModal({
                 <button
                   type="button"
                   onClick={onClose}
-                  className="btn-secondary flex-1"
+                  className="clay-surface-sm hover:scale-102 active:scale-95 flex-1 py-3 text-xs font-bold rounded-2xl text-foreground-muted hover:text-foreground transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="btn-primary flex-1 flex items-center justify-center gap-2"
+                  className="clay-btn-brand text-white shadow-clay-primary flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl font-black text-xs active:scale-95 transition-all cursor-pointer"
                 >
-                  <Save className="w-4 h-4" />
+                  <Save className="w-4 h-4 stroke-[2.5px]" />
                   Save Budget
                 </button>
               </div>

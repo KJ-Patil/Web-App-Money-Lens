@@ -211,7 +211,7 @@ export default function GlobalFloatingCalculator() {
       >
         <div
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full h-full bg-gradient-to-tr from-primary to-blue-600 shadow-2xl rounded-full flex items-center justify-center cursor-pointer border border-primary/20 text-white relative hover:scale-105 active:scale-95 transition-transform"
+          className="w-full h-full bg-gradient-to-tr from-blue-600 to-blue-800 shadow-[0_10px_24px_-2px_rgba(29,78,216,0.5),inset_2px_2px_3px_rgba(255,255,255,0.45),inset_-2px_-2px_4px_rgba(15,23,42,0.3)] rounded-full flex items-center justify-center cursor-pointer border-2 border-white/40 text-white relative hover:scale-105 active:scale-95 transition-transform"
           title="Global Calculator"
         >
           {/* Animated pulsing outer ring */}
@@ -229,7 +229,7 @@ export default function GlobalFloatingCalculator() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 15 }}
             transition={{ duration: 0.15, ease: "easeOut" }}
-            className="fixed p-4 bg-slate-900 border border-slate-700 shadow-2xl rounded-2xl w-[270px] text-white flex flex-col gap-3 font-sans pointer-events-auto"
+            className="fixed p-4 bg-slate-900/95 backdrop-blur-md border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.6),inset_1.5px_1.5px_3px_rgba(255,255,255,0.1)] rounded-3xl w-[275px] text-white flex flex-col gap-3 font-sans pointer-events-auto"
             style={{
               left: popoverPos.x,
               top: popoverPos.y,
@@ -246,15 +246,15 @@ export default function GlobalFloatingCalculator() {
 
             {/* Top Bar Header */}
             <div className="flex justify-between items-center px-1 text-slate-400">
-              <span className="text-[10px] font-extrabold tracking-wider uppercase">Global Calc</span>
+              <span className="text-[10px] font-black tracking-wider uppercase">Global Calc</span>
               <div className="flex items-center gap-2">
-                <span className="text-[9px] font-mono bg-slate-800 px-1.5 py-0.5 rounded text-slate-400">
+                <span className="text-[9px] font-mono bg-slate-800 px-1.5 py-0.5 rounded-lg text-slate-400 shadow-inner">
                   RAD / SCRATCH
                 </span>
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="text-slate-400 hover:text-slate-200 transition-colors"
+                  className="text-slate-400 hover:text-slate-200 transition-colors cursor-pointer"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -262,7 +262,7 @@ export default function GlobalFloatingCalculator() {
             </div>
 
             {/* LCD Display Panel */}
-            <div className="bg-slate-950 border border-slate-800 rounded-xl p-3 flex flex-col justify-end items-end h-[68px] font-mono shadow-inner select-all relative group">
+            <div className="bg-slate-950 border border-slate-800 rounded-2xl p-3 flex flex-col justify-end items-end h-[68px] font-mono shadow-[inset_2px_2px_4px_rgba(0,0,0,0.8),inset_-1px_-1px_2px_rgba(255,255,255,0.05)] select-all relative group">
               <div className="text-[10px] text-slate-400 tracking-wider truncate max-w-full font-medium h-4">
                 {expression && expression !== liveResult ? expression : ""}
               </div>
@@ -282,33 +282,33 @@ export default function GlobalFloatingCalculator() {
             </div>
 
             {/* Keypad Grid */}
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-4 gap-2.5">
               {/* Row 1 */}
               <button
                 type="button"
                 onClick={handleClear}
-                className="bg-rose-950/40 hover:bg-rose-900/60 text-rose-200 text-xs font-black py-2.5 rounded-xl transition-all active:scale-95 border border-rose-900/30 cursor-pointer shadow-sm"
+                className="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-xs font-black py-3 rounded-2xl transition-all active:scale-95 border border-rose-500/20 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.35),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.4)]"
               >
                 C
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("(")}
-                className="bg-slate-800 hover:bg-slate-750 text-slate-200 text-sm font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-700/30 cursor-pointer shadow-sm"
+                className="bg-slate-800/90 hover:bg-slate-750 text-slate-200 text-sm font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.35),inset_1px_1px_2px_rgba(255,255,255,0.12),inset_-1px_-1px_2px_rgba(0,0,0,0.4)]"
               >
                 (
               </button>
               <button
                 type="button"
                 onClick={() => appendChar(")")}
-                className="bg-slate-800 hover:bg-slate-750 text-slate-200 text-sm font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-700/30 cursor-pointer shadow-sm"
+                className="bg-slate-800/90 hover:bg-slate-750 text-slate-200 text-sm font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.35),inset_1px_1px_2px_rgba(255,255,255,0.12),inset_-1px_-1px_2px_rgba(0,0,0,0.4)]"
               >
                 )
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("/")}
-                className="bg-amber-600 hover:bg-amber-500 text-white text-sm font-extrabold py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm shadow-amber-900/20"
+                className="bg-amber-600 hover:bg-amber-500 text-white text-base font-extrabold py-3 rounded-2xl transition-all active:scale-95 cursor-pointer shadow-[2px_3px_8px_rgba(217,119,6,0.4),inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.3)]"
               >
                 ÷
               </button>
@@ -317,28 +317,28 @@ export default function GlobalFloatingCalculator() {
               <button
                 type="button"
                 onClick={() => appendChar("7")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 7
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("8")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 8
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("9")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 9
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("*")}
-                className="bg-amber-600 hover:bg-amber-500 text-white text-sm font-extrabold py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm shadow-amber-900/20"
+                className="bg-amber-600 hover:bg-amber-500 text-white text-base font-extrabold py-3 rounded-2xl transition-all active:scale-95 cursor-pointer shadow-[2px_3px_8px_rgba(217,119,6,0.4),inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.3)]"
               >
                 ×
               </button>
@@ -347,28 +347,28 @@ export default function GlobalFloatingCalculator() {
               <button
                 type="button"
                 onClick={() => appendChar("4")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 4
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("5")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 5
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("6")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 6
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("-")}
-                className="bg-amber-600 hover:bg-amber-500 text-white text-sm font-extrabold py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm shadow-amber-900/20"
+                className="bg-amber-600 hover:bg-amber-500 text-white text-base font-extrabold py-3 rounded-2xl transition-all active:scale-95 cursor-pointer shadow-[2px_3px_8px_rgba(217,119,6,0.4),inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.3)]"
               >
                 −
               </button>
@@ -377,28 +377,28 @@ export default function GlobalFloatingCalculator() {
               <button
                 type="button"
                 onClick={() => appendChar("1")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 1
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("2")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 2
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("3")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 3
               </button>
               <button
                 type="button"
                 onClick={() => appendChar("+")}
-                className="bg-amber-600 hover:bg-amber-500 text-white text-sm font-extrabold py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm shadow-amber-900/20"
+                className="bg-amber-600 hover:bg-amber-500 text-white text-base font-extrabold py-3 rounded-2xl transition-all active:scale-95 cursor-pointer shadow-[2px_3px_8px_rgba(217,119,6,0.4),inset_1px_1px_2px_rgba(255,255,255,0.3),inset_-1px_-1px_2px_rgba(0,0,0,0.3)]"
               >
                 +
               </button>
@@ -407,21 +407,21 @@ export default function GlobalFloatingCalculator() {
               <button
                 type="button"
                 onClick={() => appendChar("0")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 0
               </button>
               <button
                 type="button"
                 onClick={() => appendChar(".")}
-                className="bg-slate-700 hover:bg-slate-650 text-white text-base font-bold py-2.5 rounded-xl transition-all active:scale-95 border border-slate-600/20 cursor-pointer shadow-sm"
+                className="bg-slate-800/80 hover:bg-slate-700/80 text-white text-base font-bold py-3 rounded-2xl transition-all active:scale-95 border border-white/5 cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.15),inset_-1px_-1px_2px_rgba(0,0,0,0.35)]"
               >
                 .
               </button>
               <button
                 type="button"
                 onClick={handleBackspace}
-                className="bg-slate-800 hover:bg-slate-750 text-slate-300 py-2.5 rounded-xl transition-all active:scale-95 border border-slate-700/30 flex items-center justify-center cursor-pointer shadow-sm"
+                className="bg-slate-800/90 hover:bg-slate-750 text-slate-300 py-3 rounded-2xl transition-all active:scale-95 border border-white/5 flex items-center justify-center cursor-pointer shadow-[2px_3px_6px_rgba(0,0,0,0.35),inset_1px_1px_2px_rgba(255,255,255,0.12),inset_-1px_-1px_2px_rgba(0,0,0,0.4)]"
                 title="Backspace"
               >
                 <Delete className="w-4 h-4 text-slate-300" />
@@ -429,25 +429,25 @@ export default function GlobalFloatingCalculator() {
               <button
                 type="button"
                 onClick={handleEvaluate}
-                className="bg-emerald-600 hover:bg-emerald-500 text-white text-base font-black py-2.5 rounded-xl transition-all active:scale-95 cursor-pointer shadow-sm shadow-emerald-900/20"
+                className="bg-emerald-600 hover:bg-emerald-550 text-white text-lg font-black py-3 rounded-2xl transition-all active:scale-95 cursor-pointer shadow-[2px_3px_8px_rgba(16,185,129,0.4),inset_1px_1px_2px_rgba(255,255,255,0.35),inset_-1px_-1px_2px_rgba(0,0,0,0.3)]"
               >
                 =
               </button>
             </div>
 
             {/* Bottom Actions */}
-            <div className="flex gap-2 pt-1 border-t border-slate-800">
+            <div className="flex gap-2.5 pt-2 border-t border-slate-800/80">
               <button
                 type="button"
                 onClick={handleClear}
-                className="flex-1 bg-slate-800 hover:bg-slate-750 active:bg-slate-700 text-slate-300 text-xs font-bold py-2 rounded-xl transition-all cursor-pointer text-center"
+                className="flex-1 bg-slate-800/90 hover:bg-slate-750 active:scale-95 text-slate-300 text-xs font-bold py-2.5 rounded-2xl transition-all cursor-pointer text-center shadow-[2px_3px_6px_rgba(0,0,0,0.3),inset_1px_1px_2px_rgba(255,255,255,0.1)]"
               >
                 Clear
               </button>
               <button
                 type="button"
                 onClick={handleCopy}
-                className="flex-1 bg-emerald-600 hover:bg-emerald-555 active:bg-emerald-500 text-white text-xs font-black py-2 rounded-xl transition-all cursor-pointer text-center shadow-md shadow-emerald-900/10 flex items-center justify-center gap-1.5"
+                className="flex-1 clay-btn-success text-white text-xs font-black py-2.5 rounded-2xl transition-all active:scale-95 cursor-pointer text-center flex items-center justify-center gap-1.5"
               >
                 {copied ? (
                   <>

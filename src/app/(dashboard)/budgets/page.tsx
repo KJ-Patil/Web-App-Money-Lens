@@ -303,7 +303,7 @@ export default function BudgetsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-extrabold text-foreground tracking-tight sm:text-3xl">
+          <h1 className="text-2xl font-black text-foreground tracking-tight sm:text-3xl">
             {activeTab === "rule"
               ? "Budgeting Rule"
               : activeTab === "spentVsInvested"
@@ -322,22 +322,22 @@ export default function BudgetsPage() {
         {activeTab === "categories" && (
           <button
             onClick={() => setIsModalOpen(true)}
-            className="btn-primary shrink-0 flex items-center justify-center gap-2"
+            className="clay-btn-brand text-white shadow-clay-primary shrink-0 flex items-center justify-center gap-2 px-5 py-3 rounded-2xl font-black text-sm active:scale-95 transition-all cursor-pointer"
           >
-            <Edit3 className="w-4 h-4" />
+            <Edit3 className="w-4 h-4 stroke-[2.5px]" />
             {t("budgets.adjustBudgets")}
           </button>
         )}
       </div>
 
       {/* ────────────────── SEGMENT SELECTOR TABS ────────────────── */}
-      <div className="flex border-b border-border">
+      <div className="clay-inset p-1.5 rounded-2xl flex gap-1.5 bg-slate-200/50 dark:bg-slate-900/50">
         <button
           onClick={() => setActiveTab("rule")}
-          className={`py-3 px-6 text-sm font-bold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 py-2.5 px-4 text-xs font-black rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
             activeTab === "rule"
-              ? "border-primary text-primary font-extrabold"
-              : "border-transparent text-foreground-muted hover:text-foreground hover:border-border"
+              ? "clay-pill bg-white dark:bg-slate-800 text-primary shadow-clay-sm"
+              : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <PieChart className="w-4 h-4" />
@@ -345,10 +345,10 @@ export default function BudgetsPage() {
         </button>
         <button
           onClick={() => setActiveTab("categories")}
-          className={`py-3 px-6 text-sm font-bold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 py-2.5 px-4 text-xs font-black rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
             activeTab === "categories"
-              ? "border-primary text-primary font-extrabold"
-              : "border-transparent text-foreground-muted hover:text-foreground hover:border-border"
+              ? "clay-pill bg-white dark:bg-slate-800 text-primary shadow-clay-sm"
+              : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <Target className="w-4 h-4" />
@@ -356,10 +356,10 @@ export default function BudgetsPage() {
         </button>
         <button
           onClick={() => setActiveTab("spentVsInvested")}
-          className={`py-3 px-6 text-sm font-bold border-b-2 flex items-center gap-2 transition-all cursor-pointer ${
+          className={`flex-1 py-2.5 px-4 text-xs font-black rounded-xl flex items-center justify-center gap-2 transition-all cursor-pointer ${
             activeTab === "spentVsInvested"
-              ? "border-primary text-primary font-extrabold"
-              : "border-transparent text-foreground-muted hover:text-foreground hover:border-border"
+              ? "clay-pill bg-white dark:bg-slate-800 text-primary shadow-clay-sm"
+              : "text-foreground-muted hover:text-foreground"
           }`}
         >
           <ArrowLeftRight className="w-4 h-4" />
@@ -368,22 +368,22 @@ export default function BudgetsPage() {
       </div>
 
       {/* ────────────────── CALCULATION PERIOD NAVIGATION ────────────────── */}
-      <section className="bg-card border border-border p-4 rounded-2xl shadow-sm flex items-center justify-between">
+      <section className="clay-card p-4 rounded-3xl flex items-center justify-between">
         <button
           onClick={handlePrevMonth}
-          className="p-2 rounded-xl border border-border bg-background hover:bg-secondary text-icon-default hover:text-icon-active transition-all cursor-pointer"
+          className="p-2.5 rounded-2xl clay-surface-sm hover:scale-105 active:scale-95 text-foreground-muted hover:text-foreground transition-all cursor-pointer"
           title="Previous Month"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         
-        <h2 className="text-base font-extrabold text-foreground tracking-wide uppercase">
+        <h2 className="text-sm md:text-base font-black text-foreground tracking-wider uppercase">
           {formatMonthLabel(selectedDate)}
         </h2>
 
         <button
           onClick={handleNextMonth}
-          className="p-2 rounded-xl border border-border bg-background hover:bg-secondary text-icon-default hover:text-icon-active transition-all cursor-pointer"
+          className="p-2.5 rounded-2xl clay-surface-sm hover:scale-105 active:scale-95 text-foreground-muted hover:text-foreground transition-all cursor-pointer"
           title="Next Month"
         >
           <ChevronRight className="w-5 h-5" />
@@ -397,15 +397,15 @@ export default function BudgetsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             {/* Income Card */}
-            <div className="bg-card border border-border p-5 rounded-2xl shadow-sm flex flex-col justify-between">
+            <div className="clay-card p-6 rounded-3xl flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-bold text-foreground-muted tracking-wide uppercase block">
+                <span className="text-[10px] font-extrabold text-foreground-muted tracking-wider uppercase block">
                   {t("moneyRule.takeHomeIncome") !== "moneyRule.takeHomeIncome" ? t("moneyRule.takeHomeIncome") : "Monthly Take-Home Income"}
                 </span>
                 {isEditingIncome ? (
-                  <form onSubmit={handleSaveIncome} className="flex items-center gap-2 mt-2">
+                  <form onSubmit={handleSaveIncome} className="flex items-center gap-2 mt-3">
                     <div className="relative flex-1">
-                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-extrabold text-foreground-muted">
+                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-black text-primary">
                         {activeCurrency === "INR" ? "₹" : "$"}
                       </span>
                       <input
@@ -413,46 +413,46 @@ export default function BudgetsPage() {
                         value={incomeInput}
                         onChange={(e) => setIncomeInput(e.target.value)}
                         placeholder="0"
-                        className="pl-8 pr-3 py-1.5 w-full rounded-xl border border-border text-base font-extrabold text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary shadow-sm"
+                        className="pl-8 pr-3.5 py-2.5 w-full rounded-2xl clay-inset text-base font-black text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                         autoFocus
                       />
                     </div>
-                    <button type="submit" className="btn-primary py-1.5 px-3 text-xs font-bold shrink-0">
+                    <button type="submit" className="clay-btn-brand text-white py-2.5 px-4 text-xs font-black rounded-2xl active:scale-95 transition-all shrink-0">
                       {t("common.save")}
                     </button>
                   </form>
                 ) : (
-                  <div className="flex items-center gap-3 mt-1.5">
+                  <div className="flex items-center gap-3 mt-2">
                     <span className="text-2xl font-black text-foreground tracking-tight">
                       {formatAmount(storedIncome, activeCurrency, { decimalPlaces: 0 })}
                     </span>
                     <button
                       onClick={() => setIsEditingIncome(true)}
-                      className="p-1 rounded-lg hover:bg-secondary text-icon-default hover:text-icon-active transition-all"
+                      className="p-2 rounded-xl clay-surface-sm text-foreground-muted hover:text-foreground hover:scale-105 active:scale-95 transition-all cursor-pointer"
                       title="Edit Income"
                     >
-                      <Edit3 className="w-4 h-4" />
+                      <Edit3 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 )}
               </div>
 
-              <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-border text-xs">
-                <div>
-                  <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Needs ({storedSplit.needs}%)</span>
-                  <span className="font-extrabold text-foreground">
+              <div className="grid grid-cols-3 gap-2.5 mt-5 pt-4 border-t border-border/40 text-xs">
+                <div className="clay-surface-sm p-3 rounded-2xl">
+                  <span className="text-[9px] font-black text-foreground-muted uppercase tracking-wider block">Needs ({storedSplit.needs}%)</span>
+                  <span className="font-black text-foreground text-sm mt-0.5 block">
                     {formatAmount(storedIncome * (storedSplit.needs / 100), activeCurrency, { decimalPlaces: 0 })}
                   </span>
                 </div>
-                <div>
-                  <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Wants ({storedSplit.wants}%)</span>
-                  <span className="font-extrabold text-foreground">
+                <div className="clay-surface-sm p-3 rounded-2xl">
+                  <span className="text-[9px] font-black text-foreground-muted uppercase tracking-wider block">Wants ({storedSplit.wants}%)</span>
+                  <span className="font-black text-foreground text-sm mt-0.5 block">
                     {formatAmount(storedIncome * (storedSplit.wants / 100), activeCurrency, { decimalPlaces: 0 })}
                   </span>
                 </div>
-                <div>
-                  <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Invest ({storedSplit.investments}%)</span>
-                  <span className="font-extrabold text-foreground">
+                <div className="clay-surface-sm p-3 rounded-2xl">
+                  <span className="text-[9px] font-black text-foreground-muted uppercase tracking-wider block">Invest ({storedSplit.investments}%)</span>
+                  <span className="font-black text-foreground text-sm mt-0.5 block">
                     {formatAmount(storedIncome * (storedSplit.investments / 100), activeCurrency, { decimalPlaces: 0 })}
                   </span>
                 </div>
@@ -460,70 +460,70 @@ export default function BudgetsPage() {
             </div>
 
             {/* Split Percentages Configuration Card */}
-            <div className="bg-card border border-border p-5 rounded-2xl shadow-sm flex flex-col justify-between">
+            <div className="clay-card p-6 rounded-3xl flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-center">
-                  <span className="text-[10px] font-bold text-foreground-muted tracking-wide uppercase block">
+                  <span className="text-[10px] font-extrabold text-foreground-muted tracking-wider uppercase block">
                     Ratio Split configuration
                   </span>
                   {!isEditingSplit && (
                     <button
                       onClick={() => setIsEditingSplit(true)}
-                      className="p-1 rounded-lg hover:bg-secondary text-icon-default hover:text-icon-active transition-all"
+                      className="p-2 rounded-xl clay-surface-sm text-foreground-muted hover:text-foreground hover:scale-105 active:scale-95 transition-all cursor-pointer"
                       title="Configure Splitting"
                     >
-                      <Settings2 className="w-4 h-4 text-primary" />
+                      <Settings2 className="w-3.5 h-3.5 text-primary" />
                     </button>
                   )}
                 </div>
                 
                 {isEditingSplit ? (
-                  <form onSubmit={handleSaveSplit} className="space-y-3 mt-2">
+                  <form onSubmit={handleSaveSplit} className="space-y-3.5 mt-3">
                     <div className="grid grid-cols-3 gap-2">
                       <div>
-                        <label className="text-[9px] font-bold text-foreground-secondary uppercase tracking-wider block">Needs %</label>
+                        <label className="text-[9px] font-extrabold text-foreground-secondary uppercase tracking-wider block mb-1">Needs %</label>
                         <input
                           type="number"
                           value={needsPct}
                           onChange={(e) => setNeedsPct(e.target.value)}
-                          className="w-full text-center py-1 rounded-lg border border-border text-xs font-bold text-foreground focus:outline-none"
+                          className="w-full text-center py-2 rounded-xl clay-inset text-xs font-black text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                         />
                       </div>
                       <div>
-                        <label className="text-[9px] font-bold text-foreground-secondary uppercase tracking-wider block">Wants %</label>
+                        <label className="text-[9px] font-extrabold text-foreground-secondary uppercase tracking-wider block mb-1">Wants %</label>
                         <input
                           type="number"
                           value={wantsPct}
                           onChange={(e) => setWantsPct(e.target.value)}
-                          className="w-full text-center py-1 rounded-lg border border-border text-xs font-bold text-foreground focus:outline-none"
+                          className="w-full text-center py-2 rounded-xl clay-inset text-xs font-black text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                         />
                       </div>
                       <div>
-                        <label className="text-[9px] font-bold text-foreground-secondary uppercase tracking-wider block">Invest %</label>
+                        <label className="text-[9px] font-extrabold text-foreground-secondary uppercase tracking-wider block mb-1">Invest %</label>
                         <input
                           type="number"
                           value={investPct}
                           onChange={(e) => setInvestPct(e.target.value)}
-                          className="w-full text-center py-1 rounded-lg border border-border text-xs font-bold text-foreground focus:outline-none"
+                          className="w-full text-center py-2 rounded-xl clay-inset text-xs font-black text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
                         />
                       </div>
                     </div>
 
                     {splitError && (
-                      <p className="text-[10px] font-extrabold text-error flex items-center gap-1">
+                      <p className="text-[10px] font-bold text-rose-500 flex items-center gap-1">
                         <AlertTriangle className="w-3 h-3 shrink-0" />
                         <span>{splitError}</span>
                       </p>
                     )}
 
                     <div className="flex items-center gap-2 pt-1">
-                      <button type="submit" className="btn-primary py-1 px-3 text-[10px] font-black uppercase">
+                      <button type="submit" className="clay-btn-brand text-white py-2 px-4 rounded-xl text-[10px] font-black uppercase active:scale-95 transition-all cursor-pointer">
                         Apply Split
                       </button>
                       <button
                         type="button"
                         onClick={handleResetSplit}
-                        className="btn-secondary py-1 px-2 text-[10px] font-bold flex items-center gap-1 border-dashed"
+                        className="clay-surface-sm text-foreground-muted hover:text-foreground py-2 px-3 rounded-xl text-[10px] font-bold flex items-center gap-1 active:scale-95 transition-all cursor-pointer"
                         title="Reset to default ratios"
                       >
                         <RefreshCw className="w-3 h-3" />
@@ -532,11 +532,11 @@ export default function BudgetsPage() {
                     </div>
                   </form>
                 ) : (
-                  <div className="flex items-center gap-3 mt-1.5">
+                  <div className="flex items-center gap-3 mt-2">
                     <span className="text-2xl font-black text-foreground tracking-tight">
                       {storedSplit.needs} / {storedSplit.wants} / {storedSplit.investments}
                     </span>
-                    <span className="text-[10px] font-semibold text-foreground-muted bg-secondary px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-extrabold text-foreground-muted clay-surface-sm px-2.5 py-1 rounded-full">
                       Ratios Sum: 100%
                     </span>
                   </div>
@@ -544,7 +544,7 @@ export default function BudgetsPage() {
               </div>
 
               {!isEditingSplit && (
-                <p className="text-[11px] font-medium text-foreground-muted flex items-center gap-1 mt-3">
+                <p className="text-[11px] font-medium text-foreground-muted flex items-center gap-1.5 mt-4">
                   <Sliders className="w-3.5 h-3.5 text-primary shrink-0" />
                   <span>Tap the gear icon to change splits (e.g. 60/20/20 or 40/40/20).</span>
                 </p>
@@ -557,8 +557,8 @@ export default function BudgetsPage() {
             
             {/* Spending Chart Column */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="bg-card border border-border p-6 rounded-2xl shadow-sm space-y-4">
-                <h3 className="text-sm font-extrabold text-foreground">Spending Chart</h3>
+              <div className="clay-card p-6 rounded-3xl space-y-4">
+                <h3 className="text-sm font-black text-foreground">Spending Chart</h3>
                 
                 {donutChartData.length > 0 ? (
                   <div className="h-60 w-full flex items-center justify-center relative">
@@ -582,7 +582,7 @@ export default function BudgetsPage() {
                     </ResponsiveContainer>
                     
                     <div className="absolute flex flex-col items-center justify-center text-center">
-                      <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider">Total Spent</span>
+                      <span className="text-[10px] font-extrabold text-foreground-muted uppercase tracking-wider">Total Spent</span>
                       <span className="text-lg font-black text-foreground">
                         {formatAmount(
                           moneyRuleData.needs.spent + moneyRuleData.wants.spent + moneyRuleData.investments.spent, 
@@ -593,30 +593,30 @@ export default function BudgetsPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="h-60 flex flex-col items-center justify-center text-center p-4 bg-background-subtle rounded-xl border border-dashed border-border text-foreground-muted">
-                    <AlertCircle className="w-8 h-8 mb-2" />
+                  <div className="h-60 flex flex-col items-center justify-center text-center p-4 clay-inset rounded-2xl text-foreground-muted">
+                    <AlertCircle className="w-8 h-8 mb-2 text-primary/60" />
                     <span className="text-xs font-semibold">No expenses logged in {formatMonthLabel(selectedDate)}</span>
                   </div>
                 )}
 
                 <div className="space-y-2 pt-2">
-                  <div className="flex items-center justify-between text-xs font-bold">
+                  <div className="flex items-center justify-between text-xs font-extrabold clay-surface-sm p-2.5 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded bg-[#1d4ed8]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1d4ed8] shadow-sm" />
                       <span className="text-foreground">Needs ({storedSplit.needs}%)</span>
                     </div>
                     <span className="text-foreground-secondary">{formatAmount(moneyRuleData.needs.spent, activeCurrency)}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs font-bold">
+                  <div className="flex items-center justify-between text-xs font-extrabold clay-surface-sm p-2.5 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded bg-[#7c3aed]" />
+                      <div className="w-3 h-3 rounded-full bg-[#7c3aed] shadow-sm" />
                       <span className="text-foreground">Wants ({storedSplit.wants}%)</span>
                     </div>
                     <span className="text-foreground-secondary">{formatAmount(moneyRuleData.wants.spent, activeCurrency)}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs font-bold">
+                  <div className="flex items-center justify-between text-xs font-extrabold clay-surface-sm p-2.5 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded bg-[#10b981]" />
+                      <div className="w-3 h-3 rounded-full bg-[#10b981] shadow-sm" />
                       <span className="text-foreground">Investments ({storedSplit.investments}%)</span>
                     </div>
                     <span className="text-foreground-secondary">{formatAmount(moneyRuleData.investments.spent, activeCurrency)}</span>
@@ -642,13 +642,13 @@ export default function BudgetsPage() {
                   : "Financial health & future growth (FD, SIP, Mutual Funds, Stocks, Gold)";
 
                 return (
-                  <div key={key} className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
+                  <div key={key} className="clay-card rounded-3xl overflow-hidden">
                     {/* Header */}
-                    <div className="p-5 border-b border-border bg-background-subtle flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="p-5 border-b border-border/40 bg-slate-500/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="space-y-1">
-                        <h3 className="text-base font-extrabold text-foreground flex items-center gap-2">
+                        <h3 className="text-base font-black text-foreground flex items-center gap-2">
                           {title}
-                          <span className={`text-[10px] font-extrabold px-2 py-0.5 border rounded-full tracking-wide uppercase ${getStatusBadgeClass(data.status)}`}>
+                          <span className={`text-[10px] font-extrabold px-2.5 py-0.5 border rounded-full tracking-wide uppercase ${getStatusBadgeClass(data.status)}`}>
                             {data.status}
                           </span>
                         </h3>
@@ -656,8 +656,8 @@ export default function BudgetsPage() {
                       </div>
                       
                       <div className="text-left md:text-right">
-                        <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider block">Remaining</span>
-                        <span className={`text-base font-black tracking-tight ${data.remaining < 0 ? "text-error" : "text-foreground"}`}>
+                        <span className="text-[10px] font-extrabold text-foreground-muted uppercase tracking-wider block">Remaining</span>
+                        <span className={`text-base font-black tracking-tight ${data.remaining < 0 ? "text-rose-500" : "text-foreground"}`}>
                           {formatAmount(data.remaining, activeCurrency)}
                         </span>
                       </div>
@@ -665,48 +665,48 @@ export default function BudgetsPage() {
 
                     <div className="p-5 space-y-4">
                       {/* Grid Stats */}
-                      <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
-                        <div className="bg-background-subtle p-3 rounded-xl">
-                          <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Rule Limit</span>
-                          <span className="text-xs font-extrabold text-foreground">{formatAmount(data.budget, activeCurrency)}</span>
+                      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                        <div className="clay-surface-sm p-3 rounded-2xl">
+                          <span className="text-[9px] font-extrabold text-foreground-muted uppercase tracking-wider block">Rule Limit</span>
+                          <span className="text-xs font-black text-foreground mt-0.5 block">{formatAmount(data.budget, activeCurrency)}</span>
                         </div>
-                        <div className="bg-background-subtle p-3 rounded-xl">
-                          <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Allocated Budgets</span>
-                          <span className="text-xs font-extrabold text-foreground">{formatAmount(data.allocatedBudget, activeCurrency)}</span>
+                        <div className="clay-surface-sm p-3 rounded-2xl">
+                          <span className="text-[9px] font-extrabold text-foreground-muted uppercase tracking-wider block">Allocated</span>
+                          <span className="text-xs font-black text-foreground mt-0.5 block">{formatAmount(data.allocatedBudget, activeCurrency)}</span>
                         </div>
-                        <div className="bg-background-subtle p-3 rounded-xl">
-                          <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Actual Spent</span>
-                          <span className="text-xs font-extrabold text-foreground">{formatAmount(data.spent, activeCurrency)}</span>
+                        <div className="clay-surface-sm p-3 rounded-2xl">
+                          <span className="text-[9px] font-extrabold text-foreground-muted uppercase tracking-wider block">Actual Spent</span>
+                          <span className="text-xs font-black text-foreground mt-0.5 block">{formatAmount(data.spent, activeCurrency)}</span>
                         </div>
-                        <div className="bg-background-subtle p-3 rounded-xl">
-                          <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Utilized %</span>
-                          <span className="text-xs font-extrabold text-foreground">{data.usage}%</span>
+                        <div className="clay-surface-sm p-3 rounded-2xl">
+                          <span className="text-[9px] font-extrabold text-foreground-muted uppercase tracking-wider block">Utilized %</span>
+                          <span className="text-xs font-black text-foreground mt-0.5 block">{data.usage}%</span>
                         </div>
-                        <div className="bg-background-subtle p-3 rounded-xl flex items-center justify-between">
+                        <div className="clay-surface-sm p-3 rounded-2xl col-span-2 sm:col-span-1 flex items-center justify-between">
                           <div>
-                            <span className="text-[9px] font-bold text-foreground-muted uppercase tracking-wider block">Discipline</span>
-                            <span className={`text-[10px] font-black uppercase ${data.status === "Over Budget" ? "text-error" : data.status === "Near Limit" ? "text-brand" : "text-success"}`}>
+                            <span className="text-[9px] font-extrabold text-foreground-muted uppercase tracking-wider block">Discipline</span>
+                            <span className={`text-[10px] font-black uppercase ${data.status === "Over Budget" ? "text-rose-500" : data.status === "Near Limit" ? "text-amber-500" : "text-emerald-500"}`}>
                               {data.status}
                             </span>
                           </div>
                           {data.status === "On Track" ? (
-                            <CheckCircle className="w-4 h-4 text-success shrink-0" />
+                            <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
                           ) : (
-                            <AlertTriangle className={`w-4 h-4 shrink-0 ${data.status === "Near Limit" ? "text-brand" : "text-error"}`} />
+                            <AlertTriangle className={`w-4 h-4 shrink-0 ${data.status === "Near Limit" ? "text-amber-500" : "text-rose-500"}`} />
                           )}
                         </div>
                       </div>
 
                       {/* Warnings */}
                       {data.allocatedBudget > data.budget ? (
-                        <div className="bg-error-light/50 border border-error-light text-error p-3 rounded-xl flex items-center gap-2 text-xs font-semibold">
+                        <div className="bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 p-3.5 rounded-2xl flex items-center gap-2.5 text-xs font-semibold">
                           <AlertTriangle className="w-4 h-4 shrink-0" />
                           <span>
                             Category budgets for this bucket exceed your target limit of {formatAmount(data.budget, activeCurrency)} by {formatAmount(data.allocatedBudget - data.budget, activeCurrency)}. Adjust category limits.
                           </span>
                         </div>
                       ) : data.allocatedBudget <= data.budget && data.allocatedBudget > 0 ? (
-                        <div className="bg-success-light/40 border border-success-light text-success p-3 rounded-xl flex items-center gap-2 text-xs font-semibold">
+                        <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 p-3.5 rounded-2xl flex items-center gap-2.5 text-xs font-semibold">
                           <ShieldCheck className="w-4 h-4 shrink-0" />
                           <span>
                             Category budgets align with limit. Allocated {formatAmount(data.allocatedBudget, activeCurrency)} of your {formatAmount(data.budget, activeCurrency)} target ({formatAmount(data.budget - data.allocatedBudget, activeCurrency)} unallocated).
@@ -714,10 +714,10 @@ export default function BudgetsPage() {
                         </div>
                       ) : null}
 
-                      {/* Progress bar */}
-                      <div className="w-full bg-secondary h-2.5 rounded-full overflow-hidden relative shadow-inner">
+                      {/* Progress bar inside sunken clay well */}
+                      <div className="w-full clay-inset p-0.5 h-3.5 rounded-full overflow-hidden relative">
                         <div
-                          className={`h-full rounded-full transition-all duration-500 ${getProgressColor(data.status)}`}
+                          className={`h-full rounded-full transition-all duration-500 shadow-sm ${getProgressColor(data.status)}`}
                           style={{ width: `${Math.min(data.usage, 100)}%` }}
                         />
                       </div>
@@ -726,13 +726,13 @@ export default function BudgetsPage() {
                       <div className="space-y-2 pt-2">
                         <h4 className="text-xs font-black text-foreground-secondary uppercase tracking-wider">Itemized Expenses</h4>
                         {txs.length > 0 ? (
-                          <div className="border border-border rounded-xl divide-y divide-border overflow-hidden">
+                          <div className="clay-surface-sm rounded-2xl divide-y divide-border/40 overflow-hidden">
                             {txs.map((tx) => (
-                              <div key={tx.id} className="flex justify-between items-center p-3 hover:bg-secondary/40 transition-colors">
+                              <div key={tx.id} className="flex justify-between items-center p-3 hover:bg-slate-500/5 transition-colors">
                                 <div className="space-y-0.5">
                                   <span className="text-xs font-extrabold text-foreground block">{tx.description || tx.category}</span>
                                   <div className="flex items-center gap-2 text-[10px] font-semibold text-foreground-muted">
-                                    <span className="bg-secondary px-1.5 py-0.5 rounded-md text-[9px] font-bold text-foreground-secondary">{tx.category}</span>
+                                    <span className="clay-inset px-2 py-0.5 rounded-md text-[9px] font-bold text-foreground-secondary">{tx.category}</span>
                                     <span>{new Date(tx.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
                                   </div>
                                 </div>
@@ -741,7 +741,7 @@ export default function BudgetsPage() {
                             ))}
                           </div>
                         ) : (
-                          <div className="p-6 text-center text-xs font-semibold text-foreground-muted bg-background-subtle rounded-xl border border-dashed border-border">
+                          <div className="p-6 text-center text-xs font-semibold text-foreground-muted clay-inset rounded-2xl">
                             No expenses logged for {title} in this month.
                           </div>
                         )}
@@ -769,26 +769,23 @@ export default function BudgetsPage() {
             return (
               <div
                 key={summary.id}
-                className={`bg-card border p-5 rounded-2xl shadow-sm space-y-4 transition-all hover:shadow-md ${getCardBorderColor(
-                  summary.spent,
-                  summary.limit
-                )}`}
+                className="clay-card p-5 rounded-3xl space-y-4 transition-all hover:scale-[1.01]"
               >
                 {/* Row Header */}
                 <div className="flex justify-between items-start gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center border border-border shrink-0 ${
+                  <div className="flex items-center gap-3.5">
+                    <div className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.4),1px_3px_6px_rgba(0,0,0,0.06)] border ${
                       isOver 
-                        ? "bg-error-light text-error" 
+                        ? "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/20" 
                         : isWarning 
-                          ? "bg-warning-light text-brand"
-                          : "bg-primary-lighter text-primary"
+                          ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20"
+                          : "bg-primary/15 text-primary border-primary/20"
                     }`}>
-                      <Icon className="w-5 h-5" />
+                      <Icon className="w-5 h-5 stroke-[2.2px]" />
                     </div>
                     <div>
-                      <h3 className="font-extrabold text-foreground text-sm">{summary.name}</h3>
-                      <span className="text-[10px] font-bold text-foreground-secondary tracking-wide uppercase">
+                      <h3 className="font-black text-foreground text-sm">{summary.name}</h3>
+                      <span className="text-[10px] font-extrabold text-foreground-secondary tracking-wide uppercase">
                         {hasLimit ? `${t('budgets.budget')}: ${formatAmount(summary.limit, activeCurrency)}` : t('budgets.noBudgetSet')}
                       </span>
                     </div>
@@ -797,22 +794,22 @@ export default function BudgetsPage() {
                   {/* Spent calculations */}
                   <div className="text-right space-y-0.5">
                     <span className={`text-base font-black tracking-tight ${
-                      isOver ? "text-error" : isWarning ? "text-brand" : "text-foreground"
+                      isOver ? "text-rose-500" : isWarning ? "text-amber-500" : "text-foreground"
                     }`}>
                       {formatAmount(summary.spent, activeCurrency)}
                     </span>
-                    <span className="text-[10px] font-semibold text-foreground-muted block">
+                    <span className="text-[10px] font-extrabold text-foreground-muted block">
                       {hasLimit ? `${pct}% ${t('budgets.consumed')}` : t('budgets.tapToSetCap')}
                     </span>
                   </div>
                 </div>
 
-                {/* Progress Bar Meter */}
-                <div className="space-y-1">
-                  <div className="w-full bg-secondary h-3 rounded-full overflow-hidden relative shadow-inner">
+                {/* Progress Bar Meter inside sunken clay well */}
+                <div className="space-y-1.5">
+                  <div className="w-full clay-inset p-0.5 h-3.5 rounded-full overflow-hidden relative">
                     <div
-                      className={`h-full rounded-full transition-all duration-500 ${
-                        isOver ? "bg-error" : isWarning ? "bg-warning" : "bg-primary"
+                      className={`h-full rounded-full transition-all duration-500 shadow-sm ${
+                        isOver ? "bg-rose-500" : isWarning ? "bg-amber-500" : "bg-primary"
                       }`}
                       style={{ width: `${Math.min(pct, 100)}%` }}
                     />
@@ -820,22 +817,22 @@ export default function BudgetsPage() {
 
                   {/* Exceeded / Approaching alert labels */}
                   {!hasLimit ? (
-                    <span className="text-[10px] font-bold text-foreground-muted flex items-center gap-1 mt-1">
-                      <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+                    <span className="text-[10px] font-extrabold text-foreground-muted flex items-center gap-1.5 mt-1">
+                      <ShieldCheck className="w-3.5 h-3.5 text-primary/70 shrink-0" />
                       {t('budgets.noLimitConfigured', { amount: formatAmount(summary.spent, activeCurrency) })}
                     </span>
                   ) : isOver ? (
-                    <span className="text-[10px] font-bold text-error flex items-center gap-1 mt-1">
+                    <span className="text-[10px] font-extrabold text-rose-500 flex items-center gap-1.5 mt-1">
                       <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                       {t('budgets.budgetBreached', { amount: formatAmount(summary.spent - summary.limit, activeCurrency) })}
                     </span>
                   ) : isWarning ? (
-                    <span className="text-[10px] font-bold text-brand flex items-center gap-1 mt-1">
+                    <span className="text-[10px] font-extrabold text-amber-500 flex items-center gap-1.5 mt-1">
                       <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                       {t('budgets.budgetWarning')}
                     </span>
                   ) : (
-                    <span className="text-[10px] font-bold text-primary flex items-center gap-1 mt-1">
+                    <span className="text-[10px] font-extrabold text-emerald-500 flex items-center gap-1.5 mt-1">
                       <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
                       {t('budgets.optimalStatus')}
                     </span>
@@ -855,13 +852,13 @@ export default function BudgetsPage() {
             {[
               { label: "Total Spent", value: formatAmount(spentVsInvested.spent, activeCurrency), sub: "Needs + Wants", cls: "text-foreground" },
               { label: "Total Invested", value: formatAmount(spentVsInvested.invested, activeCurrency), sub: "Money you put in", cls: "text-primary" },
-              { label: "Investment Returns", value: `+${formatAmount(spentVsInvested.returns, activeCurrency)}`, sub: "Income received", cls: "text-success" },
+              { label: "Investment Returns", value: `+${formatAmount(spentVsInvested.returns, activeCurrency)}`, sub: "Income received", cls: "text-emerald-500" },
               { label: "Invest Rate", value: `${spentVsInvested.investRate}%`, sub: "of your outflow", cls: "text-foreground" },
             ].map((k) => (
-              <div key={k.label} className="bg-card border border-border p-4 rounded-2xl shadow-sm">
-                <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider block">{k.label}</span>
-                <span className={`text-xl font-black tracking-tight ${k.cls}`}>{k.value}</span>
-                <span className="text-[10px] font-medium text-foreground-muted block mt-0.5">{k.sub}</span>
+              <div key={k.label} className="clay-card p-5 rounded-3xl">
+                <span className="text-[10px] font-extrabold text-foreground-muted uppercase tracking-wider block">{k.label}</span>
+                <span className={`text-xl font-black tracking-tight mt-0.5 block ${k.cls}`}>{k.value}</span>
+                <span className="text-[10px] font-bold text-foreground-muted block mt-0.5">{k.sub}</span>
               </div>
             ))}
           </div>
@@ -869,8 +866,8 @@ export default function BudgetsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Donut Column */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="bg-card border border-border p-6 rounded-2xl shadow-sm space-y-4">
-                <h3 className="text-sm font-extrabold text-foreground">Spent vs Invested</h3>
+              <div className="clay-card p-6 rounded-3xl space-y-4">
+                <h3 className="text-sm font-black text-foreground">Spent vs Invested</h3>
 
                 {spentInvestedDonut.length > 0 ? (
                   <div className="h-60 w-full flex items-center justify-center relative">
@@ -894,30 +891,30 @@ export default function BudgetsPage() {
                     </ResponsiveContainer>
 
                     <div className="absolute flex flex-col items-center justify-center text-center">
-                      <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider">Outflow</span>
+                      <span className="text-[10px] font-extrabold text-foreground-muted uppercase tracking-wider">Outflow</span>
                       <span className="text-lg font-black text-foreground">
                         {formatAmount(spentVsInvested.spent + spentVsInvested.invested, activeCurrency, { decimalPlaces: 0 })}
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className="h-60 flex flex-col items-center justify-center text-center p-4 bg-background-subtle rounded-xl border border-dashed border-border text-foreground-muted">
-                    <AlertCircle className="w-8 h-8 mb-2" />
+                  <div className="h-60 flex flex-col items-center justify-center text-center p-4 clay-inset rounded-2xl text-foreground-muted">
+                    <AlertCircle className="w-8 h-8 mb-2 text-primary/60" />
                     <span className="text-xs font-semibold">No outflow logged in {formatMonthLabel(selectedDate)}</span>
                   </div>
                 )}
 
                 <div className="space-y-2 pt-2">
-                  <div className="flex items-center justify-between text-xs font-bold">
+                  <div className="flex items-center justify-between text-xs font-extrabold clay-surface-sm p-2.5 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded bg-[#7c3aed]" />
+                      <div className="w-3 h-3 rounded-full bg-[#7c3aed] shadow-sm" />
                       <span className="text-foreground">Spent</span>
                     </div>
                     <span className="text-foreground-secondary">{formatAmount(spentVsInvested.spent, activeCurrency)}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs font-bold">
+                  <div className="flex items-center justify-between text-xs font-extrabold clay-surface-sm p-2.5 rounded-xl">
                     <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded bg-[#10b981]" />
+                      <div className="w-3 h-3 rounded-full bg-[#10b981] shadow-sm" />
                       <span className="text-foreground">Invested</span>
                     </div>
                     <span className="text-foreground-secondary">{formatAmount(spentVsInvested.invested, activeCurrency)}</span>
@@ -933,17 +930,17 @@ export default function BudgetsPage() {
                 { key: "invested", title: "Where you invested", desc: "Money you put into investments (SIP, Stocks, Mutual Funds, …)", items: spentVsInvested.investedItems, total: spentVsInvested.invested, accent: "#10b981", incoming: false },
                 { key: "returns", title: "Investment Returns", desc: "Income received from investments — money coming in, not part of your spending plan", items: spentVsInvested.returnsItems, total: spentVsInvested.returns, accent: "#059669", incoming: true },
               ].map((sec) => (
-                <div key={sec.key} className="bg-card border border-border rounded-2xl shadow-sm overflow-hidden">
-                  <div className="p-5 border-b border-border bg-background-subtle flex items-center justify-between gap-4">
+                <div key={sec.key} className="clay-card rounded-3xl overflow-hidden">
+                  <div className="p-5 border-b border-border/40 bg-slate-500/5 flex items-center justify-between gap-4">
                     <div className="space-y-1">
-                      <h3 className="text-base font-extrabold text-foreground">{sec.title}</h3>
+                      <h3 className="text-base font-black text-foreground">{sec.title}</h3>
                       <p className="text-xs text-foreground-muted">{sec.desc}</p>
                     </div>
                     <div className="text-right shrink-0">
-                      <span className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider block">
+                      <span className="text-[10px] font-extrabold text-foreground-muted uppercase tracking-wider block">
                         {sec.incoming ? "Received" : "Total"}
                       </span>
-                      <span className={`text-base font-black tracking-tight ${sec.incoming ? "text-success" : "text-foreground"}`}>
+                      <span className={`text-base font-black tracking-tight ${sec.incoming ? "text-emerald-500" : "text-foreground"}`}>
                         {sec.incoming ? "+" : ""}{formatAmount(sec.total, activeCurrency)}
                       </span>
                     </div>
@@ -951,19 +948,19 @@ export default function BudgetsPage() {
 
                   <div className="p-5">
                     {sec.items.length > 0 ? (
-                      <div className="border border-border rounded-xl divide-y divide-border overflow-hidden">
+                      <div className="clay-surface-sm rounded-2xl divide-y divide-border/40 overflow-hidden">
                         {sec.items.map((it) => (
-                          <div key={it.name} className="flex justify-between items-center p-3 hover:bg-secondary/40 transition-colors">
-                            <div className="flex items-center gap-2">
-                              <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: sec.accent }} />
-                              <span className="text-xs font-extrabold text-foreground">{it.name}</span>
+                          <div key={it.name} className="flex justify-between items-center p-3 hover:bg-slate-500/5 transition-colors">
+                            <div className="flex items-center gap-2.5">
+                              <span className="w-2.5 h-2.5 rounded-full shrink-0 shadow-sm" style={{ backgroundColor: sec.accent }} />
+                              <span className="text-xs font-black text-foreground">{it.name}</span>
                             </div>
                             <span className="text-xs font-black text-foreground">{formatAmount(it.value, activeCurrency)}</span>
                           </div>
                         ))}
                       </div>
                     ) : (
-                      <div className="p-6 text-center text-xs font-semibold text-foreground-muted bg-background-subtle rounded-xl border border-dashed border-border">
+                      <div className="p-6 text-center text-xs font-semibold text-foreground-muted clay-inset rounded-2xl">
                         {sec.incoming
                           ? `No investment income in ${formatMonthLabel(selectedDate)}.`
                           : `No ${sec.title.toLowerCase()} logged in ${formatMonthLabel(selectedDate)}.`}

@@ -20,7 +20,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative p-3 rounded-xl border border-border bg-background hover:bg-secondary text-icon-default hover:text-icon-active transition-all cursor-pointer"
+      className="relative p-3 rounded-2xl border border-border bg-card text-icon-default hover:text-icon-active shadow-[4px_6px_14px_-2px_rgba(148,163,184,0.25),inset_1.5px_1.5px_3px_rgba(255,255,255,0.9),inset_-1.5px_-1.5px_3px_rgba(148,163,184,0.15)] dark:shadow-[0_6px_14px_-2px_rgba(0,0,0,0.5),inset_1.5px_1.5px_3px_rgba(255,255,255,0.07)] transition-all cursor-pointer hover:-translate-y-0.5 active:translate-y-0.5"
       aria-label={label}
       title={label}
     >
