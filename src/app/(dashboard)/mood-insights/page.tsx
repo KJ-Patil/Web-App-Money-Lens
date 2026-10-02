@@ -15,6 +15,7 @@ import {
 import { formatAmount } from "@/core/utils/currencyManager";
 import { useTransactions } from "@/core/store/dataStore";
 
+import { formatDate } from "@/core/utils/dateFormat";
 const MOOD_COLORS: Record<string, string> = {
   Good: "#059669",     // text-success
   Okay: "#ea580c",     // text-warning
@@ -71,7 +72,7 @@ export default function MoodInsightsPage() {
     for (let i = 6; i >= 0; i--) {
       const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
       days.push({
-        date: d.toLocaleDateString("en-US", { weekday: "short" }),
+        date: formatDate(d, { weekday: "short" }),
         key: dayKey(d),
         spend: 0,
         income: 0,

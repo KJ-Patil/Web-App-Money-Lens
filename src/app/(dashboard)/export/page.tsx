@@ -28,6 +28,7 @@ import { exportWorkbookXlsx } from "@/core/utils/excelExporter";
 import { getCurrencySymbol } from "@/core/utils/currencyManager";
 import { getTransactions, getBudgets, getSavingsGoals } from "@/core/store/dataStore";
 
+import { formatDate } from "@/core/utils/dateFormat";
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
 type OutputFormat = "excel" | "csv" | "pdf";
@@ -97,7 +98,7 @@ function daysAgoIso(n: number): string {
 
 function formatDateLabel(iso: string): string {
   if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("en-IN", {
+  return formatDate(iso, {
     day: "numeric",
     month: "short",
     year: "numeric",

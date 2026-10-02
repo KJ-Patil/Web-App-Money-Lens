@@ -39,6 +39,7 @@ import {
   Inbox,
 } from "lucide-react";
 
+import { formatDate } from "@/core/utils/dateFormat";
 // ──────────────── THEME-ALIGNED COLOR PALETTE ────────────────
 // Maps to CSS variables: --color-chart-1 through --color-chart-6
 const CHART_COLORS = [
@@ -246,7 +247,7 @@ export default function AnalyticsPage() {
   const hasData = transactions.length > 0;
 
   // Determine current/last month labels
-  const currentMonth = new Date().toLocaleString("en-US", { month: "long" });
+  const currentMonth = formatDate(new Date(), { month: "long" });
 
   return (
     <div className="flex-1 flex flex-col p-6 space-y-6 md:p-8 max-w-6xl mx-auto w-full">

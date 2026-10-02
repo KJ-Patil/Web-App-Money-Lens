@@ -20,6 +20,7 @@ import AddLoanModal, { type LoanRecord } from "@/components/modals/AddLoanModal"
 import { useLoans, setLoans } from "@/core/store/dataStore";
 import { calcEmi, calcOutstandingPrincipal, calcRemainingPayments } from "@/core/math/loan";
 
+import { formatDate } from "@/core/utils/dateFormat";
 // ─── Amortization ─────────────────────────────────────────────────────────────
 
 function calcAmortization(loan: LoanRecord) {
@@ -42,7 +43,7 @@ function calcAmortization(loan: LoanRecord) {
     if (remaining <= 0) return "Completed";
     const start = new Date(loan.startDate);
     start.setMonth(start.getMonth() + loan.tenureMonths);
-    return start.toLocaleDateString("en-IN", {
+    return formatDate(start, {
       month: "short",
       year: "numeric",
     });
@@ -262,7 +263,7 @@ function LoanCard({ loan, currencyCode, onDelete }: LoanCardProps) {
               {
                 icon: Calendar,
                 label: "Start Date",
-                value: new Date(loan.startDate).toLocaleDateString("en-IN", {
+                value: formatDate(loan.startDate, {
                   day: "numeric",
                   month: "short",
                   year: "numeric",

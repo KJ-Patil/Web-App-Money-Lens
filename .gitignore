@@ -40,3 +40,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# project docs (not needed in repo)
+CLAUDE.md
+AGENTS.md
+ANDROID_FEATURES.md
+CALENDAR.md
+FEATURES.md
+PROJECT_BLUEPRINT.md
+SECURITY_AUDIT.md
+SESSION_SUMMARY.md
+SETUP.md

@@ -10,6 +10,7 @@ import { getActiveCategories, resolveCategoryIcon, getIncomeGroupForCategory, re
 import { useTranslation } from "@/i18n/i18nContext";
 import { ResponsiveContainer, PieChart as RechartsPieChart, Pie, Cell, Tooltip } from "recharts";
 
+import { formatDate } from "@/core/utils/dateFormat";
 interface CategorySummary {
   id: string;
   name: string;
@@ -113,7 +114,7 @@ export default function BudgetsPage() {
   };
 
   const formatMonthLabel = (date: Date) => {
-    return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+    return formatDate(date, { month: "long", year: "numeric" });
   };
 
   const handleSaveIncome = (e: React.FormEvent) => {
@@ -733,7 +734,7 @@ export default function BudgetsPage() {
                                   <span className="text-xs font-extrabold text-foreground block">{tx.description || tx.category}</span>
                                   <div className="flex items-center gap-2 text-[10px] font-semibold text-foreground-muted">
                                     <span className="clay-inset px-2 py-0.5 rounded-md text-[9px] font-bold text-foreground-secondary">{tx.category}</span>
-                                    <span>{new Date(tx.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>
+                                    <span>{formatDate(tx.date, { month: "short", day: "numeric" })}</span>
                                   </div>
                                 </div>
                                 <span className="text-xs font-black text-foreground">{formatAmount(tx.amount, activeCurrency)}</span>

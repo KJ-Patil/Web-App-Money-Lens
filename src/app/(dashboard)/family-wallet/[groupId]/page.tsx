@@ -9,6 +9,7 @@ import { formatAmount, getAllCurrencies, getExchangeRate, toBaseAmount, fromBase
 import { GroupExpense, useFamilyGroups, getFamilyGroups, setFamilyGroups, computeGroupPoolBalance } from "@/core/store/dataStore";
 import { db, auth } from "@/config/firebase";
 
+import { formatDate } from "@/core/utils/dateFormat";
 /** The signed-in user's display name, matching how the rest of the app resolves it. */
 function getMyName(): string {
   if (typeof window !== "undefined") {
@@ -366,7 +367,7 @@ export default function FamilyGroupPage({
                 <div>
                   <h4 className="font-bold text-foreground text-sm">{exp.description}</h4>
                   <span className="text-[10px] text-foreground-muted font-bold">
-                    Paid by: {exp.paidBy} • {new Date(exp.date).toLocaleDateString()}
+                    Paid by: {exp.paidBy} • {formatDate(exp.date)}
                   </span>
                 </div>
               </div>

@@ -28,6 +28,7 @@ import {
 } from "@/core/store/dataStore";
 import FlashReminderModal from "@/components/modals/FlashReminderModal";
 
+import { formatDate } from "@/core/utils/dateFormat";
 export default function CustomerLedgerPage({
   params,
 }: {
@@ -460,7 +461,7 @@ export default function CustomerLedgerPage({
                         </span>
                         <span className="text-[10px] text-foreground-muted font-semibold flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-icon-muted" />
-                          {new Date(entry.date).toLocaleDateString("en-US", {
+                          {formatDate(entry.date, {
                             month: "short",
                             day: "numeric",
                             year: "numeric",

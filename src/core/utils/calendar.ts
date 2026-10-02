@@ -2,13 +2,11 @@
 // Everything works in the user's *local* time so a transaction's day matches
 // what they see elsewhere (the transactions list groups by local date too).
 
-/** Weekday column labels, Monday-first (matches the calendar UI). */
-export const WEEKDAY_LABELS = ["M", "T", "W", "T", "F", "S", "S"] as const;
-
-export const MONTH_LABELS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-] as const;
+// Weekday and month LABELS used to live here as hardcoded English arrays, which
+// left the calendar reading "January" and "M T W T F S S" even in Hindi or
+// Marathi. They now come from `getWeekdayLabels` / `getMonthLabels` in
+// core/utils/dateFormat, which asks the browser for them in the user's language.
+// This module stays pure date arithmetic, with no display strings.
 
 /** Local YYYY-MM-DD key for a date (used for grouping + URL params). */
 export function toDateKey(d: Date): string {

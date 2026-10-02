@@ -88,6 +88,10 @@ export function exportTransactionsCsv(
   ];
 
   const rows = transactions.map((tx) => [
+    // Pinned to en-IN, NOT the user's language, on purpose: this value lands in a
+    // spreadsheet cell, and mr-IN renders digits in Devanagari ("१५/०१/२०२६"),
+    // which Excel and Sheets cannot parse back into a date. Screen dates go
+    // through core/utils/dateFormat; file exports stay machine-readable.
     new Date(tx.date).toLocaleDateString("en-IN", {
       year: "numeric",
       month: "2-digit",

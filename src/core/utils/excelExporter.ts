@@ -163,6 +163,12 @@ function dateTag(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
+/**
+ * Pinned to en-IN, NOT the user's language, on purpose: this value lands in a
+ * spreadsheet cell, and mr-IN renders digits in Devanagari ("१५/०१/२०२६"), which
+ * Excel and Sheets cannot parse back into a date. Screen dates go through
+ * core/utils/dateFormat; file exports stay machine-readable.
+ */
 function fmtDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-IN", {
     year: "numeric",
@@ -203,6 +209,7 @@ export async function exportWorkbookXlsx(
 
   // Escape the currency symbol for use inside an Excel number-format string.
   const money = `"${currencySymbol}"#,##0`;
+  // Pinned alongside fmtDate above so one workbook never mixes two date styles.
   const generatedOn = new Date().toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",

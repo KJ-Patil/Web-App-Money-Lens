@@ -10,6 +10,7 @@ import { deriveKeyFromPin, encryptValue, decryptValue, isEncrypted } from "./enc
 import type { CategoryData } from "@/core/utils/categories";
 import { calcOutstandingPrincipal } from "@/core/math/loan";
 
+import { formatDate } from "@/core/utils/dateFormat";
 /**
  * Central data layer — the single source of truth for the app.
  *
@@ -917,7 +918,7 @@ export function getDailyBalanceTrend(
     running += dailyNet[i];
     const d = new Date(windowStart);
     d.setDate(d.getDate() + i);
-    points.push({ day: d.toLocaleDateString("en-US", { weekday: "short" }), Balance: running });
+    points.push({ day: formatDate(d, { weekday: "short" }), Balance: running });
   }
   return points;
 }
@@ -940,7 +941,7 @@ export function getMonthlyTrend(
     const monthTxs = txs.filter(inMonth(now, -i));
     const t = getTotals(monthTxs);
     points.push({
-      month: ref.toLocaleDateString("en-US", { month: "short" }),
+      month: formatDate(ref, { month: "short" }),
       Income: t.income,
       Expense: t.expense,
     });

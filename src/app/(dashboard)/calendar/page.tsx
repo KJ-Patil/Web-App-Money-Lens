@@ -17,13 +17,8 @@ import {
   useManualSubscriptions,
   type Transaction,
 } from "@/core/store/dataStore";
-import {
-  WEEKDAY_LABELS,
-  MONTH_LABELS,
-  toDateKey,
-  isSameDay,
-  buildMonthGrid,
-} from "@/core/utils/calendar";
+import { toDateKey, isSameDay, buildMonthGrid } from "@/core/utils/calendar";
+import { getMonthLabels, getWeekdayLabels } from "@/core/utils/dateFormat";
 import { computeDueDates } from "@/core/utils/dueDates";
 
 export default function CalendarPage() {
@@ -37,6 +32,12 @@ export default function CalendarPage() {
   const [viewDate, setViewDate] = useState<Date>(
     () => new Date(today.getFullYear(), today.getMonth(), 1)
   );
+
+  // Built once per mount rather than per render: each call runs 12 (or 7) Intl
+  // formats. The language can only change via a full reload, so there is nothing
+  // to re-derive while this page is mounted.
+  const monthLabels = useMemo(() => getMonthLabels("long"), []);
+  const weekdayLabels = useMemo(() => getWeekdayLabels("narrow"), []);
   const [activeCurrency, setActiveCurrency] = useState("INR");
 
   useEffect(() => {
@@ -150,7 +151,7 @@ export default function CalendarPage() {
             <ChevronLeft className="w-5 h-5" />
           </button>
           <span className="text-base font-black text-foreground tracking-tight">
-            {MONTH_LABELS[month]} {year}
+            {monthLabels[month]} {year}
           </span>
           <button
             onClick={() => shiftMonth(1)}
@@ -175,7 +176,7 @@ export default function CalendarPage() {
 
         {/* Weekday labels */}
         <div className="grid grid-cols-7 gap-1 mb-1">
-          {WEEKDAY_LABELS.map((label, i) => (
+          {weekdayLabels.map((label, i) => (
             <span
               key={i}
               className="text-[10px] font-bold text-foreground-muted uppercase tracking-wider text-center py-1"

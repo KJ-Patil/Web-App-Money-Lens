@@ -24,6 +24,7 @@ import {
 import { toDateKey, parseDateKey } from "@/core/utils/calendar";
 import { computeDueDates } from "@/core/utils/dueDates";
 
+import { formatDate } from "@/core/utils/dateFormat";
 interface LedgerHit {
   customerName: string;
   /** The account's current running balance (+ you get, − you give). */
@@ -134,7 +135,7 @@ export default function CalendarDayPage({
       .reduce((s, h) => s + h.entry.amount, 0);
 
   const heading = parsed
-    ? parsed.toLocaleDateString(undefined, {
+    ? formatDate(parsed, {
         weekday: "long",
         day: "numeric",
         month: "long",

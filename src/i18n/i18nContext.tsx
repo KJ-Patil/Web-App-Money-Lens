@@ -58,6 +58,11 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
       const effectiveLocale = DICTIONARIES[saved] ? saved : "en";
       setLocaleState(effectiveLocale);
       setDict(DICTIONARIES[effectiveLocale] || en);
+      // Keep the document's language in step with the dictionary. The root
+      // layout hardcodes `lang="en"`, so without this a Hindi or Marathi UI is
+      // still announced to screen readers with English pronunciation rules and
+      // offered for translation *from* English by the browser.
+      document.documentElement.lang = effectiveLocale;
     }
   }, []);
 

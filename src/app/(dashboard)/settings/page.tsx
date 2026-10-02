@@ -39,6 +39,7 @@ import { sanitizeAvatarUrl, sanitizeDisplayName } from "@/core/utils/avatar";
 import { getLanguage } from "@/core/utils/languages";
 import { useTranslation } from "@/i18n/i18nContext";
 
+import { formatDateTime } from "@/core/utils/dateFormat";
 export default function SettingsPage() {
   const [activeCurrency, setActiveCurrency] = useState("INR");
   const [isCurrencySheetOpen, setIsCurrencySheetOpen] = useState(false);
@@ -158,7 +159,7 @@ export default function SettingsPage() {
   const formatBackupDate = (isoStr: string) => {
     try {
       const d = new Date(isoStr);
-      return d.toLocaleString(activeLanguage === "hi" ? "hi-IN" : "en-US", {
+      return formatDateTime(d, {
         month: "short",
         day: "numeric",
         year: "numeric",

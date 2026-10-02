@@ -9,6 +9,7 @@ import { SavingsGoal, getSavingsGoals } from "@/core/store/dataStore";
 import { BUCKET_LABELS } from "@/core/utils/bucketConfig";
 import { useTranslation } from "@/i18n/i18nContext";
 
+import { formatDate } from "@/core/utils/dateFormat";
 export default function SavingsPage() {
   const [goals, setGoals] = useState<SavingsGoal[]>([]);
   const [activeCurrency, setActiveCurrency] = useState("INR");
@@ -124,7 +125,7 @@ export default function SavingsPage() {
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-foreground-muted">
                     <Calendar className="w-3.5 h-3.5 shrink-0" />
-                    <span>{t('savings.by')}: {new Date(goal.deadline).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</span>
+                    <span>{t('savings.by')}: {formatDate(goal.deadline, { month: "short", day: "numeric", year: "numeric" })}</span>
                   </div>
                 </div>
 

@@ -25,6 +25,7 @@ import {
   type DetectedSubscription,
 } from "@/core/insights/subscriptions";
 
+import { formatDate } from "@/core/utils/dateFormat";
 /** A row in the tracker: either auto-detected or user-added (`manual`). */
 type SubscriptionRow = DetectedSubscription & { manual?: boolean };
 
@@ -178,7 +179,7 @@ export default function SubscriptionsPage() {
                 <p className="text-xs text-foreground-muted mt-0.5">
                   {sub.category}
                   {sub.manual ? "" : ` · ${sub.occurrences} charges`} · next ~
-                  {new Date(sub.nextEstimatedISO).toLocaleDateString("en-US", {
+                  {formatDate(sub.nextEstimatedISO, {
                     month: "short",
                     day: "numeric",
                   })}

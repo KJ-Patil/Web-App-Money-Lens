@@ -109,7 +109,7 @@
 
 ### 17. Personalization & System
 - **Multi-currency** (INR/USD/EUR/AUD) with searchable picker; **live exchange rates** (open.er-api.com, cached 12h, offline fallback), Indian lakh/crore layout for INR.
-- **Language preference** (English/Hindi/Marathi with i18n dictionaries; full Indian-languages dataset for the picker).
+- **Language preference** (English/Hindi/Marathi, each backed by its own i18n dictionary; the picker lists only languages that ship a dictionary).
 - **Category manager** — active vs archived categories, custom colors/icons, archive/restore.
 - **Notifications center** — severity icons, mark-all-read, delete per item.
 - **Flash reminder modal**, **top progress loader**, **toast notifications**.

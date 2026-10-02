@@ -57,6 +57,10 @@ function buildHtml(opts: PdfReportOptions): string {
   const netBalance = totalIncome - totalExpense;
   const netColor = netBalance >= 0 ? "#059669" : "#dc2626";
 
+  // The report body is English throughout (headings, column labels), so its
+  // dates stay en-IN rather than following the UI language — a Marathi date
+  // under an English heading reads as a bug, not as localization. Localizing
+  // this export means translating the whole template, not just the dates.
   const generatedOn = new Date().toLocaleDateString("en-IN", {
     year: "numeric",
     month: "long",

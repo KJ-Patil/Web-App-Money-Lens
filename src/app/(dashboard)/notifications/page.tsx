@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Bell, CheckSquare, Trash2, ShieldCheck, AlertTriangle, XCircle, Info } from "lucide-react";
 
+import { formatDate, formatTime } from "@/core/utils/dateFormat";
 interface NotificationItem {
   id: string;
   text: string;
@@ -178,8 +179,8 @@ export default function NotificationsPage() {
                       {n.type}
                     </span>
                     <span className="text-[10px] text-foreground-muted shrink-0 font-medium">
-                      {new Date(n.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}{" "}
-                      {new Date(n.date).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })}
+                      {formatDate(n.date, { month: "short", day: "numeric" })}{" "}
+                      {formatTime(n.date, { hour: "2-digit", minute: "2-digit", hour12: true })}
                     </span>
                   </div>
                   
