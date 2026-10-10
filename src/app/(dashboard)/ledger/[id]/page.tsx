@@ -16,6 +16,8 @@ import {
   FileText,
   Trash2,
   AlertTriangle,
+  Smartphone,
+  Pencil,
 } from "lucide-react";
 import { formatAmount, toBaseAmount } from "@/core/utils/currencyManager";
 import { Customer, LedgerEntry } from "../page";
@@ -27,6 +29,7 @@ import {
   generateId,
 } from "@/core/store/dataStore";
 import FlashReminderModal from "@/components/modals/FlashReminderModal";
+import UpiPayModal from "@/components/modals/UpiPayModal";
 
 import { formatDate } from "@/core/utils/dateFormat";
 export default function CustomerLedgerPage({
@@ -51,6 +54,9 @@ export default function CustomerLedgerPage({
   // Delete confirmation
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [isReminderOpen, setIsReminderOpen] = useState(false);
+  const [isUpiPayOpen, setIsUpiPayOpen] = useState(false);
+  const [isEditingUpi, setIsEditingUpi] = useState(false);
+  const [editUpiValue, setEditUpiValue] = useState("");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -178,6 +184,60 @@ export default function CustomerLedgerPage({
     setIsEntryOpen(true);
   };
 
+  const handleUpiPaymentConfirmed = (upiRefId: string) => {
+    if (!customer) return;
+    const payAmount = Math.abs(customer.balance);
+    if (payAmount <= 0) return;
+
+    const isWeOwe = customer.balance < 0;
+    const desc = `UPI payment${upiRefId ? ` (Ref: ${upiRefId})` : ""}`;
+
+    const tx = addTransaction({
+      amount: payAmount,
+      type: isWeOwe ? "expense" : "income",
+      category: "Ledger",
+      description: `${isWeOwe ? "Gave to" : "Got from"} ${customer.name}: ${desc}`,
+    });
+
+    const newLog: LedgerEntry = {
+      id: generateId(),
+      amount: payAmount,
+      type: isWeOwe ? "gave" : "got",
+      description: desc,
+      date: tx.date,
+      txId: tx.id,
+    };
+
+    const updatedCust: Customer = {
+      ...customer,
+      balance: 0,
+      history: [newLog, ...customer.history],
+    };
+
+    const customersList = getLedgerCustomers();
+    const updatedList = customersList.map((c) =>
+      c.id === customer.id ? updatedCust : c
+    );
+    setLedgerCustomers(updatedList);
+    setCustomer(updatedCust);
+  };
+
+  const handleSaveUpiId = () => {
+    if (!customer) return;
+    const customersList = getLedgerCustomers();
+    const trimmed = editUpiValue.trim();
+    const updatedCust: Customer = {
+      ...customer,
+      ...(trimmed ? { upiId: trimmed } : { upiId: undefined }),
+    };
+    const updatedList = customersList.map((c) =>
+      c.id === customer.id ? updatedCust : c
+    );
+    setLedgerCustomers(updatedList);
+    setCustomer(updatedCust);
+    setIsEditingUpi(false);
+  };
+
   const absBal = Math.abs(customer.balance);
   const isCredit = customer.balance > 0;
   const isDebit = customer.balance < 0;
@@ -247,6 +307,46 @@ export default function CustomerLedgerPage({
             <Phone className="w-3.5 h-3.5 text-icon-muted" />
             {customer.phone}
           </span>
+          {/* UPI ID display + inline edit */}
+          <div className="flex items-center gap-1.5 mt-0.5">
+            <Smartphone className="w-3.5 h-3.5 text-icon-muted" />
+            {isEditingUpi ? (
+              <span className="flex items-center gap-1.5">
+                <input
+                  type="text"
+                  value={editUpiValue}
+                  onChange={(e) => setEditUpiValue(e.target.value.toLowerCase())}
+                  className="input-base text-xs py-1 px-2 w-40"
+                  placeholder="name@okaxis"
+                  autoFocus
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleSaveUpiId();
+                    if (e.key === "Escape") setIsEditingUpi(false);
+                  }}
+                />
+                <button onClick={handleSaveUpiId} className="text-success hover:text-success cursor-pointer">
+                  <Save className="w-3.5 h-3.5" />
+                </button>
+                <button onClick={() => setIsEditingUpi(false)} className="text-foreground-muted hover:text-foreground cursor-pointer">
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </span>
+            ) : (
+              <span className="text-xs font-semibold text-foreground-secondary flex items-center gap-1">
+                {customer.upiId || "No UPI ID"}
+                <button
+                  onClick={() => {
+                    setEditUpiValue(customer.upiId || "");
+                    setIsEditingUpi(true);
+                  }}
+                  className="text-icon-muted hover:text-primary cursor-pointer"
+                  title="Edit UPI ID"
+                >
+                  <Pencil className="w-3 h-3" />
+                </button>
+              </span>
+            )}
+          </div>
           {customer.description && (
             <div className="text-xs font-bold text-foreground-secondary/90 bg-background/50 border border-border px-3 py-1.5 rounded-lg mt-2 inline-block max-w-sm">
               Notes: <span className="font-semibold text-foreground-muted">{customer.description}</span>
@@ -307,7 +407,7 @@ export default function CustomerLedgerPage({
       </section>
 
       {/* ────────────────── QUICK BOOK ENTRIES (GAVE / GOT) + WHATSAPP ────────────────── */}
-      <section className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <button
           onClick={() => handleOpenForm("gave")}
           className="py-4 rounded-2xl bg-success text-success-foreground border border-success hover:brightness-110 text-sm font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-[0.98]"
@@ -328,10 +428,21 @@ export default function CustomerLedgerPage({
         {!isSettled && (
           <button
             onClick={() => setIsReminderOpen(true)}
-            className="py-4 rounded-2xl bg-card border-2 border-dashed border-success/40 text-success hover:bg-success-light hover:border-success text-sm font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer col-span-2 sm:col-span-1"
+            className="py-4 rounded-2xl bg-card border-2 border-dashed border-success/40 text-success hover:bg-success-light hover:border-success text-sm font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer"
           >
             <MessageSquare className="w-5 h-5 stroke-[2.5px]" />
-            Send Reminder
+            Reminder
+          </button>
+        )}
+
+        {/* UPI Pay Quick Action */}
+        {!isSettled && (
+          <button
+            onClick={() => setIsUpiPayOpen(true)}
+            className="py-4 rounded-2xl bg-card border-2 border-dashed border-primary/40 text-primary hover:bg-primary-lighter hover:border-primary text-sm font-extrabold flex items-center justify-center gap-2 transition-all cursor-pointer"
+          >
+            <Smartphone className="w-5 h-5 stroke-[2.5px]" />
+            Pay UPI
           </button>
         )}
       </section>
@@ -553,6 +664,23 @@ export default function CustomerLedgerPage({
           balance={customer.balance}
           relation={customer.balance > 0 ? "credit" : "debit"}
           currency={activeCurrency}
+        />
+      )}
+
+      {/* UPI Pay modal */}
+      {isUpiPayOpen && (
+        <UpiPayModal
+          isOpen={true}
+          onClose={() => setIsUpiPayOpen(false)}
+          recipientName={customer.name}
+          upiId={customer.upiId}
+          amount={absBal}
+          note={
+            isDebit
+              ? `Payment to ${customer.name}`
+              : `Collecting from ${customer.name}`
+          }
+          onPaymentConfirmed={handleUpiPaymentConfirmed}
         />
       )}
     </div>

@@ -64,6 +64,7 @@ export default function LedgerPage() {
   const [newDirection, setNewDirection] = useState<"get" | "give">("get");
   const [initialBalance, setInitialBalance] = useState("");
   const [newDescription, setNewDescription] = useState("");
+  const [newUpiId, setNewUpiId] = useState("");
 
   const handleAddAccount = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,9 +113,8 @@ export default function LedgerPage() {
       phone: toFullNumber(newCountry, newPhone), // e.g. "+919876543210"
       balance: finalBalance,
       history,
-      // Only attach description when provided — Firestore's setDoc() rejects
-      // fields explicitly set to `undefined`, so omit the key instead.
       ...(newDescription ? { description: newDescription } : {}),
+      ...(newUpiId.trim() ? { upiId: newUpiId.trim() } : {}),
     };
 
     setLedgerCustomers([newCust, ...customers]);
@@ -126,6 +126,7 @@ export default function LedgerPage() {
     setNewDirection("get");
     setInitialBalance("");
     setNewDescription("");
+    setNewUpiId("");
     setIsAddOpen(false);
   };
 
@@ -557,6 +558,23 @@ export default function LedgerPage() {
                   }}
                   error={phoneError}
                 />
+              </div>
+
+              {/* UPI ID */}
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-foreground-secondary uppercase tracking-wider">
+                  UPI ID (Optional)
+                </label>
+                <input
+                  type="text"
+                  value={newUpiId}
+                  onChange={(e) => setNewUpiId(e.target.value)}
+                  className="input-base w-full"
+                  placeholder="e.g. name@okaxis"
+                />
+                <p className="text-[10px] font-semibold text-foreground-muted">
+                  Add their UPI ID to enable one-tap payments.
+                </p>
               </div>
 
               {/* Initial Balance */}

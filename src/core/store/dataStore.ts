@@ -81,6 +81,8 @@ export interface LedgerCustomer {
   id: string;
   name: string;
   phone: string;
+  /** UPI Virtual Payment Address, e.g. name@okaxis */
+  upiId?: string;
   /** positive: credit (they owe us), negative: debit (we owe them) */
   balance: number;
   history: LedgerEntry[];

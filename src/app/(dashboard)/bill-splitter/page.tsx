@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Receipt, Plus, Users, ArrowRight, MessageCircle, X, UserCheck, ArrowDownLeft, ArrowUpRight, Scale, Phone, User } from "lucide-react";
+import { Receipt, Plus, Users, ArrowRight, MessageCircle, X, UserCheck, ArrowDownLeft, ArrowUpRight, Scale, Phone, User, Smartphone } from "lucide-react";
 import { simplifyDebts, calculateBalances, ExpenseEntry, Settlement, BalanceRecord } from "@/core/math/DebtSimplifier";
 import { formatAmount } from "@/core/utils/currencyManager";
 import { getLedgerCustomers } from "@/core/store/dataStore";
 import FlashReminderModal from "@/components/modals/FlashReminderModal";
+import UpiPayModal from "@/components/modals/UpiPayModal";
+import { toast } from "sonner";
 
 export default function BillSplitterPage() {
   const [expenses, setExpenses] = useState<ExpenseEntry[]>([]);
@@ -26,6 +28,16 @@ export default function BillSplitterPage() {
   });
   const [youName, setYouName] = useState("");
   const [activeReminder, setActiveReminder] = useState<{ recipientName: string; balance: number; phone: string } | null>(null);
+  const [upiIds, setUpiIds] = useState<Record<string, string>>(() => {
+    if (typeof window === "undefined") return {};
+    const ledger = getLedgerCustomers();
+    const initial: Record<string, string> = {};
+    ledger.forEach((c) => {
+      if (c.upiId) initial[c.name] = c.upiId;
+    });
+    return initial;
+  });
+  const [activeUpiSettle, setActiveUpiSettle] = useState<{ from: string; to: string; amount: number } | null>(null);
 
   // Form State
   const [splitMode, setSplitMode] = useState<"equal" | "individual">("equal");
@@ -106,6 +118,9 @@ export default function BillSplitterPage() {
 
   const setContact = (person: string, phone: string) =>
     setContacts((prev) => ({ ...prev, [person]: phone }));
+
+  const setUpiId = (person: string, vpa: string) =>
+    setUpiIds((prev) => ({ ...prev, [person]: vpa }));
 
   // Automatically lookup ledger contacts if names match (ledger is checked on state init and can be updated dynamic, or typed)
 
@@ -347,10 +362,10 @@ export default function BillSplitterPage() {
               <div className="space-y-1">
                 <h3 className="font-extrabold text-foreground flex items-center gap-2">
                   <Phone className="w-4 h-4 text-brand" />
-                  People & Mobile Numbers
+                  People & Contact Details
                 </h3>
                 <p className="text-[11px] font-semibold text-foreground-muted">
-                  Add numbers (with country code) so WhatsApp reminders reach the right person.
+                  Add numbers for WhatsApp reminders and UPI IDs for one-tap settlements.
                 </p>
               </div>
 
@@ -371,17 +386,26 @@ export default function BillSplitterPage() {
                 </select>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {people.map((p) => (
-                  <div key={p} className="flex items-center gap-2">
-                    <span className="font-bold text-foreground text-sm w-24 truncate shrink-0">{p}</span>
-                    <input
-                      type="tel"
-                      value={contacts[p] || ""}
-                      onChange={(e) => setContact(p, e.target.value)}
-                      placeholder="+919876543210"
-                      className="input-base w-full"
-                    />
+                  <div key={p} className="space-y-1.5">
+                    <span className="font-bold text-foreground text-sm block">{p}</span>
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="tel"
+                        value={contacts[p] || ""}
+                        onChange={(e) => setContact(p, e.target.value)}
+                        placeholder="+919876543210"
+                        className="input-base w-full"
+                      />
+                      <input
+                        type="text"
+                        value={upiIds[p] || ""}
+                        onChange={(e) => setUpiId(p, e.target.value.toLowerCase())}
+                        placeholder="upi@okaxis"
+                        className="input-base w-full"
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -419,10 +443,17 @@ export default function BillSplitterPage() {
                       <span className="font-bold text-foreground text-sm w-16 truncate">{settlement.to}</span>
                     </div>
                     
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <span className="text-base font-black text-foreground">
                         {formatAmount(settlement.amount, "INR")}
                       </span>
+                      <button
+                        onClick={() => setActiveUpiSettle({ from: settlement.from, to: settlement.to, amount: settlement.amount })}
+                        className="w-8 h-8 rounded-full bg-primary-lighter text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors cursor-pointer"
+                        title="Settle via UPI"
+                      >
+                        <Smartphone className="w-4 h-4" />
+                      </button>
                       <button
                         onClick={() => handleOpenReminder(settlement.from, settlement.amount)}
                         className="w-8 h-8 rounded-full bg-success-light text-success flex items-center justify-center hover:bg-success hover:text-white transition-colors cursor-pointer"
@@ -505,9 +536,18 @@ export default function BillSplitterPage() {
                     className="flex items-center justify-between bg-error-light border border-error/20 p-3 rounded-xl"
                   >
                     <span className="font-bold text-foreground text-sm truncate pr-2">{s.to}</span>
-                    <span className="font-black text-error text-sm shrink-0">
-                      − {formatAmount(s.amount, "INR")}
-                    </span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-black text-error text-sm">
+                        − {formatAmount(s.amount, "INR")}
+                      </span>
+                      <button
+                        onClick={() => setActiveUpiSettle({ from: s.from, to: s.to, amount: s.amount })}
+                        className="w-7 h-7 rounded-full bg-primary-lighter text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-colors cursor-pointer"
+                        title="Pay via UPI"
+                      >
+                        <Smartphone className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))
               )}
@@ -609,6 +649,20 @@ export default function BillSplitterPage() {
             if (activeReminder) {
               // Note: activeReminder.phone can be updated, let's keep it clean
             }
+          }}
+        />
+      )}
+
+      {activeUpiSettle && (
+        <UpiPayModal
+          isOpen={true}
+          onClose={() => setActiveUpiSettle(null)}
+          recipientName={activeUpiSettle.to}
+          upiId={upiIds[activeUpiSettle.to] || ""}
+          amount={activeUpiSettle.amount}
+          note={`Bill settlement: ${activeUpiSettle.from} → ${activeUpiSettle.to}`}
+          onPaymentConfirmed={() => {
+            toast.success(`Settled ${formatAmount(activeUpiSettle.amount, "INR")} with ${activeUpiSettle.to}`);
           }}
         />
       )}
