@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { X, Check, Save } from "lucide-react";
 import { getBudgets, setBudgets } from "@/core/store/dataStore";
-import { getActiveCategories } from "@/core/utils/categories";
+import { getActiveCategories, resolveCategoryIcon, type CategoryData } from "@/core/utils/categories";
 import { getCurrencySymbol, toBaseAmount, fromBaseAmount } from "@/core/utils/currencyManager";
 
 interface SetBudgetModalProps {
@@ -21,7 +21,7 @@ export default function SetBudgetModal({
   const [limit, setLimit] = useState("");
   const [success, setSuccess] = useState(false);
   // Budgetable categories are the user's active expense categories.
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<CategoryData[]>([]);
   // Budgets are stored in base (INR) but entered and shown in the user's active
   // display currency, so the field converts on the way in and out. Without this
   // a budget typed under a "$" label would be saved as ₹ and then compared
@@ -34,12 +34,12 @@ export default function SetBudgetModal({
 
   useEffect(() => {
     if (isOpen) {
-      const names = getActiveCategories("expense").map((c) => c.name);
-      const first = names[0] ?? "";
+      const activeCats = getActiveCategories("expense");
+      const first = activeCats[0]?.name ?? "";
       const budgets = getBudgets();
       const currency = localStorage.getItem("active_currency") || "INR";
       setTimeout(() => {
-        setCategories(names);
+        setCategories(activeCats);
         setSuccess(false);
         setCategory(first);
         setActiveCurrency(currency);
@@ -108,26 +108,28 @@ export default function SetBudgetModal({
             </div>
           ) : (
             <>
-              {/* Category Chips Selector */}
+              {/* Category Pills Selector */}
               <div className="space-y-2">
                 <span className="text-[10px] font-extrabold text-foreground-secondary uppercase tracking-wider block">
                   Select Category
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {categories.map((cat) => {
-                    const isSelected = category === cat;
+                    const isSelected = category === cat.name;
+                    const Icon = resolveCategoryIcon(cat.iconName);
                     return (
                       <button
-                        key={cat}
+                        key={cat.id}
                         type="button"
-                        onClick={() => handleCategorySelect(cat)}
-                        className={`px-4 py-2 text-xs font-black rounded-xl transition-all cursor-pointer ${
+                        onClick={() => handleCategorySelect(cat.name)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer ${
                           isSelected
-                            ? "clay-btn-brand text-white shadow-clay-primary scale-102"
-                            : "clay-surface-sm text-foreground-secondary hover:text-foreground hover:scale-105 active:scale-95"
+                            ? "bg-primary text-white border-transparent font-bold shadow-md scale-105"
+                            : "bg-card border-border-strong/40 text-foreground-secondary hover:bg-secondary/70 hover:text-foreground font-semibold shadow-xs hover:scale-102"
                         }`}
                       >
-                        {cat}
+                        <Icon className="w-3.5 h-3.5 shrink-0" />
+                        <span>{cat.name}</span>
                       </button>
                     );
                   })}

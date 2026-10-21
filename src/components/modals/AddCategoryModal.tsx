@@ -179,10 +179,10 @@ export default function AddCategoryModal({
                   key={iconName}
                   type="button"
                   onClick={() => setSelectedIcon(iconName)}
-                  className={`flex items-center justify-center p-3 rounded-xl border transition-colors ${
+                  className={`flex items-center justify-center p-3 rounded-xl border transition-all cursor-pointer ${
                     selectedIcon === iconName 
-                      ? "border-primary bg-primary-lighter text-primary" 
-                      : "border-border bg-card text-icon-muted hover:bg-secondary"
+                      ? "bg-primary text-white border-transparent font-bold shadow-md scale-105" 
+                      : "border-border-strong/40 bg-card text-foreground-secondary hover:bg-secondary/70 hover:text-foreground"
                   }`}
                 >
                   <Icon className="w-5 h-5" />

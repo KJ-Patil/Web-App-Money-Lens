@@ -154,16 +154,16 @@ export default function AddGoalModal({
                   <Layers className="w-3.5 h-3.5" />
                   Counts As
                 </span>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="flex flex-wrap gap-2">
                   {(Object.keys(BUCKET_LABELS) as BucketType[]).map((b) => (
                     <button
                       key={b}
                       type="button"
                       onClick={() => setBucket(b)}
-                      className={`py-2.5 text-xs font-bold rounded-xl border transition-all cursor-pointer ${
+                      className={`inline-flex items-center px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer ${
                         bucket === b
-                          ? "bg-primary-lighter text-primary border-primary font-extrabold"
-                          : "bg-card border-border text-foreground-secondary hover:bg-secondary hover:text-foreground"
+                          ? "bg-primary text-white border-transparent font-bold shadow-md scale-105"
+                          : "bg-card border-border-strong/40 text-foreground-secondary hover:bg-secondary/70 hover:text-foreground font-semibold shadow-xs hover:scale-102"
                       }`}
                     >
                       {BUCKET_LABELS[b]}

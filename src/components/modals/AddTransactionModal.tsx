@@ -7,7 +7,9 @@ import {
   getActiveCategories,
   resolveCategoryIcon,
   EXTRA_CATEGORY_GROUPS,
+  EXTRA_CATEGORIES_FLAT,
   INCOME_EXTRA_CATEGORY_GROUPS,
+  INCOME_EXTRA_CATEGORIES_FLAT,
   isExtraCategory,
   isIncomeExtraCategory,
 } from "@/core/utils/categories";
@@ -338,57 +340,98 @@ export default function AddTransactionModal({
                 </div>
               )}
 
-              {/* Category Grid */}
+              {/* Category Pills */}
               <div className="space-y-2">
                 <span className="text-xs font-bold text-foreground-secondary uppercase tracking-wider block">
                   {transactionType === "expense" ? "Choose Budget Category" : "Choose Income Category"}
                 </span>
-                <div className="grid grid-cols-4 gap-3">
-                  {(transactionType === "expense" ? expenseCategories : incomeCategories).map((opt) => {
-                    const Icon = resolveCategoryIcon(opt.iconName);
-                    const isSelected = category === opt.name;
-                    return (
+                {(() => {
+                  // Filter out any literal "Other" from the base category list so it doesn't conflict with the expander pill
+                  const baseCategories = (transactionType === "expense" ? expenseCategories : incomeCategories)
+                    .filter((c) => c.name.toLowerCase() !== "other");
+
+                  const isBaseCategory = baseCategories.some((c) => c.name === category);
+
+                  // Only search extra categories if the selected category is NOT already in the base list
+                  const selectedExtraItem = !isBaseCategory
+                    ? (transactionType === "expense"
+                        ? EXTRA_CATEGORIES_FLAT.find((c) => c.name === category)
+                        : INCOME_EXTRA_CATEGORIES_FLAT.find((c) => c.name === category))
+                    : null;
+
+                  const isExtraSelected = !isBaseCategory && (Boolean(selectedExtraItem) || category.toLowerCase() === "other");
+
+                  const OtherIcon = selectedExtraItem
+                    ? resolveCategoryIcon(selectedExtraItem.iconName)
+                    : MoreHorizontal;
+
+                  const isExpanderActive = showOther || isExtraSelected;
+
+                  return (
+                    <div className="flex flex-wrap gap-2">
+                      {baseCategories.map((opt) => {
+                        const Icon = resolveCategoryIcon(opt.iconName);
+                        const isSelected = category === opt.name;
+                        return (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => {
+                              setCategory(opt.name);
+                              setShowOther(false);
+                            }}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer ${
+                              isSelected
+                                ? "bg-primary text-white border-transparent font-bold shadow-md scale-105"
+                                : "bg-card border-border-strong/40 text-foreground-secondary hover:bg-secondary/70 hover:text-foreground font-semibold shadow-xs hover:scale-102"
+                            }`}
+                          >
+                            <Icon className="w-3.5 h-3.5 shrink-0" />
+                            <span>{opt.name}</span>
+                          </button>
+                        );
+                      })}
+
+                      {/* "Other" expander pill */}
                       <button
-                        key={opt.id}
                         type="button"
-                        onClick={() => { setCategory(opt.name); setShowOther(false); }}
-                        className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all cursor-pointer ${
-                          isSelected
-                            ? "bg-primary text-white border-transparent font-bold scale-105 shadow-[0_6px_14px_-2px_rgba(29,78,216,0.45),inset_1.5px_1.5px_2.5px_rgba(255,255,255,0.45),inset_-1.5px_-1.5px_2.5px_rgba(15,23,42,0.3)]"
-                            : "bg-card border-border text-icon-default hover:bg-secondary/70 hover:text-foreground shadow-[3px_5px_10px_-2px_rgba(148,163,184,0.2),inset_1px_1px_2px_rgba(255,255,255,0.9)] dark:shadow-[0_4px_8px_-2px_rgba(0,0,0,0.5)]"
+                        onClick={() => setShowOther((v) => !v)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer ${
+                          isExpanderActive
+                            ? "bg-primary text-white border-transparent font-bold shadow-md scale-105"
+                            : "bg-card border-border-strong/40 text-foreground-secondary hover:bg-secondary/70 hover:text-foreground font-semibold shadow-xs hover:scale-102"
                         }`}
                       >
-                        <Icon className="w-5 h-5 mb-1" />
-                        <span className="text-[10px] truncate max-w-full">{opt.name}</span>
+                        <OtherIcon className="w-3.5 h-3.5 shrink-0" />
+                        <span>{selectedExtraItem ? selectedExtraItem.name : "Other"}</span>
                       </button>
-                    );
-                  })}
-
-                  {/* "Other" expander — reveals the full extra-category list */}
-                  <button
-                    type="button"
-                    onClick={() => setShowOther((v) => !v)}
-                    className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all cursor-pointer ${
-                      showOther || isExtraCategory(category) || isIncomeExtraCategory(category)
-                        ? "bg-primary text-white border-transparent font-bold scale-105 shadow-[0_6px_14px_-2px_rgba(29,78,216,0.45),inset_1.5px_1.5px_2.5px_rgba(255,255,255,0.45),inset_-1.5px_-1.5px_2.5px_rgba(15,23,42,0.3)]"
-                        : "bg-card border-border text-icon-default hover:bg-secondary/70 hover:text-foreground shadow-[3px_5px_10px_-2px_rgba(148,163,184,0.2),inset_1px_1px_2px_rgba(255,255,255,0.9)] dark:shadow-[0_4px_8px_-2px_rgba(0,0,0,0.5)]"
-                    }`}
-                  >
-                    <MoreHorizontal className="w-5 h-5 mb-1" />
-                    <span className="text-[10px] truncate max-w-full">Other</span>
-                  </button>
-                </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Expanded "Other" list: grouped by bucket for expense, flat for income */}
                 {showOther && (
-                  <div className="mt-1 rounded-2xl border border-border bg-background-subtle p-3 space-y-3 max-h-64 overflow-y-auto">
+                  <div className="mt-1 rounded-2xl border border-border-strong/30 bg-background-subtle p-3 space-y-3 max-h-60 overflow-y-auto">
+                    <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-foreground-muted">
+                        All Other Categories
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setShowOther(false)}
+                        className="text-[10px] font-bold text-primary hover:underline cursor-pointer"
+                      >
+                        Minimize
+                      </button>
+                    </div>
+
                     {transactionType === "expense" ? (
                       EXTRA_CATEGORY_GROUPS.map((group) => (
                         <div key={group.bucket} className="space-y-1.5">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-foreground-muted block">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-foreground-secondary block">
                             {group.bucket}
                           </span>
-                          <div className="grid grid-cols-4 gap-2">
+                          <div className="flex flex-wrap gap-1.5">
                             {group.categories.map((opt) => {
                               const Icon = resolveCategoryIcon(opt.iconName);
                               const isSelected = category === opt.name;
@@ -396,15 +439,18 @@ export default function AddTransactionModal({
                                 <button
                                   key={opt.name}
                                   type="button"
-                                  onClick={() => setCategory(opt.name)}
-                                  className={`flex flex-col items-center justify-center p-2.5 rounded-xl border transition-all cursor-pointer ${
+                                  onClick={() => {
+                                    setCategory(opt.name);
+                                    setShowOther(false);
+                                  }}
+                                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer ${
                                     isSelected
-                                      ? "bg-primary-lighter text-primary border-primary font-bold"
-                                      : "bg-card border-border text-icon-default hover:bg-secondary hover:text-foreground"
+                                      ? "bg-primary text-white border-transparent font-bold shadow-md scale-105"
+                                      : "bg-card border-border-strong/40 text-foreground-secondary hover:bg-secondary/70 hover:text-foreground font-semibold shadow-xs hover:scale-102"
                                   }`}
                                 >
-                                  <Icon className="w-4 h-4 mb-1" />
-                                  <span className="text-[9px] leading-tight text-center break-words max-w-full">{opt.name}</span>
+                                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                                  <span className="leading-none">{opt.name}</span>
                                 </button>
                               );
                             })}
@@ -414,10 +460,10 @@ export default function AddTransactionModal({
                     ) : (
                       INCOME_EXTRA_CATEGORY_GROUPS.map((group) => (
                         <div key={group.group} className="space-y-1.5">
-                          <span className="text-[10px] font-black uppercase tracking-wider text-foreground-muted block">
+                          <span className="text-[10px] font-black uppercase tracking-wider text-foreground-secondary block">
                             {group.group}
                           </span>
-                          <div className="grid grid-cols-4 gap-2">
+                          <div className="flex flex-wrap gap-1.5">
                             {group.categories.map((opt) => {
                               const Icon = resolveCategoryIcon(opt.iconName);
                               const isSelected = category === opt.name;
@@ -425,15 +471,18 @@ export default function AddTransactionModal({
                                 <button
                                   key={opt.name}
                                   type="button"
-                                  onClick={() => setCategory(opt.name)}
-                                  className={`flex flex-col items-center justify-center p-2.5 rounded-xl border transition-all cursor-pointer ${
+                                  onClick={() => {
+                                    setCategory(opt.name);
+                                    setShowOther(false);
+                                  }}
+                                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer ${
                                     isSelected
-                                      ? "bg-primary-lighter text-primary border-primary font-bold"
-                                      : "bg-card border-border text-icon-default hover:bg-secondary hover:text-foreground"
+                                      ? "bg-primary text-white border-transparent font-bold shadow-md scale-105"
+                                      : "bg-card border-border-strong/40 text-foreground-secondary hover:bg-secondary/70 hover:text-foreground font-semibold shadow-xs hover:scale-102"
                                   }`}
                                 >
-                                  <Icon className="w-4 h-4 mb-1" />
-                                  <span className="text-[9px] leading-tight text-center break-words max-w-full">{opt.name}</span>
+                                  <Icon className="w-3.5 h-3.5 shrink-0" />
+                                  <span className="leading-none">{opt.name}</span>
                                 </button>
                               );
                             })}

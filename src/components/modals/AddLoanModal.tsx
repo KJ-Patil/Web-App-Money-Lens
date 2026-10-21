@@ -192,10 +192,10 @@ export default function AddLoanModal({
                       key={l}
                       type="button"
                       onClick={() => setLender(l)}
-                      className={`text-xs font-bold px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
+                      className={`inline-flex items-center px-3 py-1.5 rounded-full border text-xs transition-all cursor-pointer ${
                         lender === l
-                          ? "bg-primary-lighter text-primary border-primary/30"
-                          : "bg-secondary border-border text-foreground-secondary hover:bg-secondary/80"
+                          ? "bg-primary text-white border-transparent font-bold shadow-md scale-105"
+                          : "bg-card border-border-strong/40 text-foreground-secondary hover:bg-secondary/70 hover:text-foreground font-semibold shadow-xs hover:scale-102"
                       }`}
                     >
                       {l}
