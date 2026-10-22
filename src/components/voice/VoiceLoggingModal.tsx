@@ -1,11 +1,18 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Mic, X, CheckCircle2, AlertCircle, Play, Square } from "lucide-react";
+import { Mic, X, CheckCircle2, AlertCircle, Play, Square, BookOpen } from "lucide-react";
 import { parseVoiceInput, ParsedVoiceData } from "@/core/voice/VoiceParser";
 import { formatAmount } from "@/core/utils/currencyManager";
 import { checkAnomaly } from "@/core/utils/AnomalyRadar";
-import { addTransaction, getTransactions } from "@/core/store/dataStore";
+import {
+  addTransaction,
+  getTransactions,
+  getLedgerCustomers,
+  setLedgerCustomers,
+  generateId,
+  type LedgerCustomer,
+} from "@/core/store/dataStore";
 
 interface VoiceLoggingModalProps {
   isOpen: boolean;
@@ -28,35 +35,51 @@ export default function VoiceLoggingModal({
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Initialize Speech Recognition
-      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-      if (SpeechRecognition) {
-        const recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = language;
+    if (typeof window === "undefined") return;
 
-        recognition.onresult = (event: any) => {
-          let currentTranscript = "";
-          for (let i = event.resultIndex; i < event.results.length; ++i) {
-            currentTranscript += event.results[i][0].transcript;
-          }
-          setTranscript(currentTranscript);
-        };
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
 
-        recognition.onerror = (event: any) => {
-          console.error("Speech recognition error", event.error);
-          setIsRecording(false);
-        };
-
-        recognition.onend = () => {
-          setIsRecording(false);
-        };
-
-        recognitionRef.current = recognition;
-      }
+    // Stop the previous instance before creating a new one.
+    const prev = recognitionRef.current;
+    if (prev) {
+      prev.onresult = null;
+      prev.onerror = null;
+      prev.onend = null;
+      try { prev.stop(); } catch {}
     }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = language;
+
+    recognition.onresult = (event: any) => {
+      let currentTranscript = "";
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        currentTranscript += event.results[i][0].transcript;
+      }
+      setTranscript(currentTranscript);
+    };
+
+    recognition.onerror = (event: any) => {
+      if (event.error === "aborted" || event.error === "no-speech") return;
+      console.error("Speech recognition error", event.error);
+      setIsRecording(false);
+    };
+
+    recognition.onend = () => {
+      setIsRecording(false);
+    };
+
+    recognitionRef.current = recognition;
+
+    return () => {
+      recognition.onresult = null;
+      recognition.onerror = null;
+      recognition.onend = null;
+      try { recognition.stop(); } catch {}
+    };
   }, [language]);
 
   useEffect(() => {
@@ -107,12 +130,58 @@ export default function VoiceLoggingModal({
   const handleConfirm = () => {
     if (!parsedData || !parsedData.amount || !parsedData.type || !parsedData.category) return;
 
-    addTransaction({
-      amount: parsedData.amount,
-      type: parsedData.type,
-      category: parsedData.category,
-      description: parsedData.description || `Voice entry: ${parsedData.category}`,
-    });
+    if (parsedData.personName) {
+      const entryType = parsedData.type === "expense" ? "gave" : "got";
+      const entryDesc = `${entryType === "gave" ? "Gave to" : "Got from"} ${parsedData.personName}`;
+
+      const tx = addTransaction({
+        amount: parsedData.amount,
+        type: parsedData.type,
+        category: "Ledger",
+        description: `${entryDesc}: ${parsedData.description}`,
+      });
+
+      const customers = getLedgerCustomers();
+      const existing = customers.find(
+        (c) => c.name.toLowerCase() === parsedData.personName!.toLowerCase()
+      );
+
+      const ledgerEntry = {
+        id: generateId(),
+        amount: parsedData.amount,
+        type: entryType as "gave" | "got",
+        description: parsedData.description || "Voice entry",
+        date: tx.date,
+        txId: tx.id,
+      };
+
+      const balanceAdj = entryType === "gave" ? parsedData.amount : -parsedData.amount;
+
+      if (existing) {
+        const updated: LedgerCustomer = {
+          ...existing,
+          balance: existing.balance + balanceAdj,
+          history: [ledgerEntry, ...existing.history],
+        };
+        setLedgerCustomers(customers.map((c) => (c.id === existing.id ? updated : c)));
+      } else {
+        const newCust: LedgerCustomer = {
+          id: generateId(),
+          name: parsedData.personName,
+          phone: "",
+          balance: balanceAdj,
+          history: [ledgerEntry],
+        };
+        setLedgerCustomers([newCust, ...customers]);
+      }
+    } else {
+      addTransaction({
+        amount: parsedData.amount,
+        type: parsedData.type,
+        category: parsedData.category,
+        description: parsedData.description || `Voice entry: ${parsedData.category}`,
+      });
+    }
 
     setSuccess(true);
     setTimeout(() => {
@@ -208,16 +277,30 @@ export default function VoiceLoggingModal({
                     </h4>
                     
                     {parsedData.amount ? (
-                      <div className="grid grid-cols-2 gap-3">
-                        <div>
-                          <span className="block text-[10px] uppercase text-foreground-muted font-bold">Amount</span>
-                          <span className={`text-lg font-black ${parsedData.type === 'income' ? 'text-success' : 'text-error'}`}>
-                            {formatAmount(parsedData.amount, "INR")}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="block text-[10px] uppercase text-foreground-muted font-bold">Category</span>
-                          <span className="text-sm font-bold text-foreground">{parsedData.category}</span>
+                      <div className="space-y-3">
+                        {parsedData.personName && (
+                          <div className="flex items-center gap-2 bg-primary/10 text-primary px-3 py-2 rounded-lg">
+                            <BookOpen className="w-4 h-4" />
+                            <span className="text-xs font-bold uppercase">
+                              Ledger: {parsedData.type === "expense" ? "Gave to" : "Got from"} {parsedData.personName}
+                            </span>
+                          </div>
+                        )}
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <span className="block text-[10px] uppercase text-foreground-muted font-bold">Amount</span>
+                            <span className={`text-lg font-black ${parsedData.type === 'income' ? 'text-success' : 'text-error'}`}>
+                              {formatAmount(parsedData.amount, "INR")}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="block text-[10px] uppercase text-foreground-muted font-bold">
+                              {parsedData.personName ? "Person" : "Category"}
+                            </span>
+                            <span className="text-sm font-bold text-foreground">
+                              {parsedData.personName || parsedData.category}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ) : (
